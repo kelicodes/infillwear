@@ -1,0 +1,112 @@
+/* =========================================================
+   NAVBAR ENHANCEMENTS (builds on your global .nav)
+   ========================================================= */
+
+.nav {
+  transition:
+    background var(--t-mid),
+    box-shadow var(--t-mid),
+    border-color var(--t-mid);
+}
+
+/* Glow edge when scrolled */
+.nav--scrolled {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.nav-links {
+  transition: transform var(--t-mid) var(--ease-out),
+              opacity   var(--t-mid);
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+/* Hover glow underline enhancement */
+.nav-links a:hover {
+  text-shadow: 0 0 10px rgba(184, 255, 53, 0.5);
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Logout tweak (make it stand out slightly) */
+.btn-fire {
+  font-size: 0.7rem;
+  padding: 12px 20px;
+}
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.nav-toggle {
+  display: none;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+
+    padding: 24px 0;
+
+    background: rgba(8, 8, 16, 0.95);
+    backdrop-filter: var(--blur-lg);
+
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-links--open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+  }
+}
+
+/* =========================================================
+   MICRO-INTERACTIONS
+   ========================================================= */
+
+/* Cart button pulse on hover */
+.nav-actions .btn-icon:hover {
+  box-shadow: var(--glow-ice);
+  transform: scale(1.08);
+}
+
+/* Logo hover effect */
+.nav-logo:hover {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: transform var(--t-fast);
+}
