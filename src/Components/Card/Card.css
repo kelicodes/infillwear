@@ -48,14 +48,14 @@
 
 /* TITLE (slightly bigger for balance) */
 .product-title {
-  font-size: 1.05rem;
+  font-size: 0.90rem;
   margin-bottom: 6px;
   font-weight: 700;
 }
 
 /* DESCRIPTION */
 .product-desc {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   margin-bottom: 12px;
 

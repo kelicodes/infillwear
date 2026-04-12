@@ -1,0 +1,161 @@
+.location-page {
+  min-height: 100vh;
+}
+
+/* HERO */
+.location-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.location-hero p {
+  max-width: 650px;
+  margin: 12px auto 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* GRID */
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+/* CARD */
+.location-card {
+  padding: 28px;
+  border-radius: var(--radius);
+}
+
+.location-card h2 {
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+.location-card p {
+  margin-bottom: 18px;
+}
+
+/* BADGE */
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(184, 255, 53, 0.1);
+  color: var(--acid-green);
+  font-size: 0.75rem;
+  font-family: "Unbounded";
+}
+
+/* DETAILS */
+.location-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* MAP */
+.map-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-placeholder {
+  text-align: center;
+}
+
+.map-pin {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* CTA */
+.location-cta {
+  margin-top: 50px;
+  padding: 30px;
+  text-align: center;
+  border-radius: var(--radius);
+}
+
+.location-cta h3 {
+  margin-bottom: 10px;
+}
+
+.location-cta p {
+  margin-bottom: 18px;
+  color: var(--text-secondary);
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .location-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .location-card,
+  .map-card {
+    padding: 20px;
+  }
+}
+
+
+
+.map-card {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 320px;
+}
+
+/* KEY FIX */
+.map-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+  display: block;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+  .map-card {
+    min-height: 260px;
+  }
+
+  .map-iframe {
+    min-height: 260px;
+  }
+}

@@ -1,0 +1,53 @@
+/* =========================================================
+   COLLECTION CONTROLS (SEARCH + SORT)
+   ========================================================= */
+.collection{
+    margin-top: 50px;
+}
+.collection-controls {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.collection-controls select {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-secondary);
+  font-family: "Syne";
+}

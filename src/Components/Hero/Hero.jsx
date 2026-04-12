@@ -352,7 +352,7 @@ const HeroSection = () => {
 
           {/* CTA row */}
           <div className="hero__ctas hero__anim hero__anim--5">
-            <a href="/shop" className="hero__cta-primary">
+            <a href="/collection" className="hero__cta-primary">
               Shop The Drop
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />

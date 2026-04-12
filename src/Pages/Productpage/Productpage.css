@@ -1087,3 +1087,65 @@
 /* ── Keep mobile-only elements hidden on desktop ────────────────────────────── */
 .mobile-dots   { display: none; }
 .mobile-cta-bar { display: none; }
+
+
+
+/* =========================================================
+   RELATED PRODUCTS (MODERN UX)
+   ========================================================= */
+
+.related-section {
+  margin-top: 90px;
+}
+
+/* Header */
+.related-header {
+  margin-bottom: 22px;
+}
+
+.related-header p {
+  margin-top: 6px;
+  max-width: 500px;
+}
+
+/* Desktop Grid */
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
+}
+
+/* Card wrapper (slightly smaller feel than main products) */
+.related-item .card {
+  transform: scale(0.97);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.related-item .card:hover {
+  transform: scale(1.02);
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE: SWIPE CAROUSEL (IMPORTANT UX FIX)
+──────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  .related-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 14px;
+    padding-bottom: 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .related-item {
+    flex: 0 0 70%;   /* 👈 THIS gives “1.5 products visible” feel */
+    scroll-snap-align: start;
+  }
+
+  /* optional: hide scrollbar */
+  .related-grid::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -13,10 +13,7 @@ const NewArrivals = () => {
     const fetchNew = async () => {
       try {
         const res = await axios.get(API);
-
-        // take latest 6 (simulate "new")
         const latest = res.data.products.slice(-6).reverse();
-
         setProducts(latest);
       } catch (err) {
         console.error(err);
@@ -34,24 +31,21 @@ const NewArrivals = () => {
 
   return (
     <section className="new-arrivals section">
-
       <div className="container">
 
         {/* HEADER */}
         <div className="new-header">
           <h2 className="text-display text-gradient">New Arrivals</h2>
-          <p>Fresh drops. Limited pieces. Stay ahead.</p>
+          <p>Swipe vertically to explore fresh drops</p>
         </div>
 
-        {/* PRODUCTS */}
+        {/* SCROLL AREA */}
         <div className="new-scroll">
 
           {loading
-            ? Array(4)
-                .fill(0)
-                .map((_, i) => (
-                  <div key={i} className="card skeleton new-skeleton"></div>
-                ))
+            ? Array(4).fill(0).map((_, i) => (
+                <div key={i} className="card skeleton new-skeleton" />
+              ))
             : products.map((product) => (
                 <div className="new-item" key={product._id}>
                   <ProductCard
@@ -59,10 +53,10 @@ const NewArrivals = () => {
                     addToCart={addToCart}
                   />
                 </div>
-              ))}
+              ))
+          }
 
         </div>
-
       </div>
     </section>
   );

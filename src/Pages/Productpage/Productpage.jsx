@@ -449,6 +449,7 @@ const ProductPage = () => {
         </button>
 
       </div>
+      
     </div>
   );
 };

@@ -7,6 +7,7 @@ import Home from './Pages/Home/Home'
 import { Route, Routes } from 'react-router-dom'
 import ProductPage from './Pages/Productpage/Productpage'
 import ScrollToTop from './Components/scroll/scroll'
+import Collection from './Pages/Ourcollection/Ourcollection'
 
 function App() {
  
@@ -18,6 +19,8 @@ function App() {
  <Routes>
     <Route path='/' element={<Home/>}/>
     <Route path='/product/:id' element={<ProductPage/>}/>
+    <Route path='/collection' element={<Collection/>}/>
+    
  </Routes>
  <Footer/>
  

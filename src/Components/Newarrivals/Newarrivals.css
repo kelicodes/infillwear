@@ -1,67 +1,94 @@
 /* =========================================================
-   NEW ARRIVALS SECTION
+   NEW ARRIVALS SECTION (IMPROVED UX)
    ========================================================= */
 
 .new-arrivals {
   position: relative;
 }
 
-/* ─── HEADER ───────────────────────── */
+/* HEADER */
 .new-header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .new-header p {
+  margin-top: 8px;
   max-width: 420px;
-  margin-top: 10px;
+  color: var(--text-secondary);
 }
 
-/* ─── SCROLL CONTAINER ───────────────── */
+/* =========================================================
+   SCROLL CONTAINER (IMPORTANT FIX)
+   ========================================================= */
 .new-scroll {
   display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+  gap: 14px;
 
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
+
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* hide scrollbar (clean look) */
+/* hide scrollbar */
 .new-scroll::-webkit-scrollbar {
   display: none;
 }
 
-/* ─── ITEM ─────────────────────────── */
+/* =========================================================
+   ITEM WIDTH CONTROL (KEY FIX)
+   ========================================================= */
 .new-item {
-  min-width: 260px;
-  flex-shrink: 0;
-
+  flex: 0 0 auto;
   scroll-snap-align: start;
+
+  /* desktop default */
+  width: 260px;
 }
 
-/* ─── SKELETON ─────────────────────── */
+/* =========================================================
+   SKELETON
+   ========================================================= */
 .new-skeleton {
   width: 260px;
-  height: 360px;
+  height: 340px;
   border-radius: var(--radius);
 }
 
-/* ─── HOVER SCROLL EFFECT ─────────── */
-.new-scroll:hover {
-  cursor: grab;
-}
-
-.new-scroll:active {
-  cursor: grabbing;
-}
-
-/* ─── RESPONSIVE ──────────────────── */
+/* =========================================================
+   MOBILE FIX (THIS IS THE IMPORTANT PART)
+   ========================================================= */
 @media (max-width: 768px) {
+
   .new-header {
-    text-align: center;
+    text-align: left;
   }
 
+  .new-header h2 {
+    font-size: 2rem;
+  }
+
+  /* SHOW ~1.5 PRODUCTS ON SCREEN */
   .new-item {
-    min-width: 220px;
+    width: 70vw;   /* key fix */
+  }
+
+  /* REDUCE CARD HEIGHT VISUALLY */
+  .card-media {
+    aspect-ratio: 3 / 3.8; /* slightly shorter */
+  }
+
+  .product-title {
+    font-size: 0.95rem;
+  }
+
+  .product-desc {
+    font-size: 0.75rem;
+  }
+
+  .product-btn {
+    font-size: 0.7rem;
+    padding: 10px 14px;
   }
 }
