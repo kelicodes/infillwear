@@ -21,8 +21,8 @@ const CATEGORIES = [
     href: "/shop/hoodies",
     accentVar: "--ice-blue",
     count: "87 styles",
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&q=80&auto=format&fit=crop",
+   image:
+  "https://images.unsplash.com/photo-1509942774463-acf339cf87d5?w=600&q=80&auto=format&fit=crop",
     tag: "HYPE",
     tagClass: "badge-hype",
   },
