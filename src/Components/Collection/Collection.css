@@ -1,0 +1,45 @@
+/* =========================================================
+   COLLECTION PAGE
+   ========================================================= */
+
+.collection-header {
+  margin-bottom: 40px;
+}
+
+.collection-header p {
+  max-width: 420px;
+  margin-top: 10px;
+}
+
+/* ─── FILTERS ───────────────────────────── */
+.collection-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+/* ─── GRID ─────────────────────────────── */
+.collection-grid {
+  display: grid;
+  gap: 24px;
+
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* ─── SKELETON ─────────────────────────── */
+.skeleton-card {
+  height: 360px;
+  border-radius: var(--radius);
+}
+
+/* ─── RESPONSIVE ───────────────────────── */
+@media (max-width: 768px) {
+  .collection-header {
+    text-align: center;
+  }
+
+  .collection-filters {
+    justify-content: center;
+  }
+}

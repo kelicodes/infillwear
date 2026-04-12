@@ -1,0 +1,916 @@
+import { useEffect, useState, useRef } from "react";
+
+// ─── Inline CSS (no external file needed — uses global vars) ──────────────────
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Syne:wght@400;600;800&display=swap');
+
+  /* ── COLLECTION PAGE ─────────────────────────────────────────────────── */
+  .collection-page {
+    min-height: 100vh;
+    padding-block: 100px 80px;
+  }
+
+  /* ── HERO HEADER ─────────────────────────────────────────────────────── */
+  .collection-header {
+    position: relative;
+    margin-bottom: 56px;
+  }
+
+  .collection-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Syne", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--acid-green);
+    margin-bottom: 16px;
+  }
+
+  .collection-eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 2px;
+    background: var(--acid-green);
+    display: inline-block;
+    border-radius: 2px;
+    box-shadow: var(--glow-green);
+  }
+
+  .collection-title {
+    font-family: "Unbounded", sans-serif;
+    font-size: clamp(2.8rem, 7vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+
+  .collection-title .accent {
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+
+  .collection-meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .collection-meta p {
+    font-family: "Syne", sans-serif;
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    max-width: 340px;
+    line-height: 1.6;
+  }
+
+  .collection-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Unbounded", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 7px 14px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .collection-count .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--acid-green);
+    box-shadow: var(--glow-green);
+    animation: glow-pulse 2.2s ease-in-out infinite;
+  }
+
+  /* Decorative glow blob behind title */
+  .collection-header::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -80px;
+    width: 400px;
+    height: 300px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(184, 255, 53, 0.06) 0%,
+      rgba(77, 244, 255, 0.04) 50%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── FILTER BAR ───────────────────────────────────────────────────────── */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-family: "Unbounded", sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+
+  .filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-family: "Syne", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+    user-select: none;
+  }
+
+  .filter-tag:hover {
+    background: rgba(184, 255, 53, 0.08);
+    border-color: rgba(184, 255, 53, 0.4);
+    color: var(--acid-green);
+    transform: translateY(-1px);
+  }
+
+  .filter-tag.active {
+    background: rgba(184, 255, 53, 0.12);
+    border-color: var(--acid-green);
+    color: var(--acid-green);
+    box-shadow: 0 0 16px rgba(184, 255, 53, 0.2);
+  }
+
+  .filter-tag .tag-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.18s;
+  }
+
+  .filter-tag.active .tag-dot,
+  .filter-tag:hover .tag-dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ── SORT BAR ─────────────────────────────────────────────────────────── */
+  .collection-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .results-info {
+    font-family: "Syne", sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .results-info span {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 6px;
+  }
+
+  .view-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,0.08);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+  }
+
+  .view-btn.active,
+  .view-btn:hover {
+    border-color: var(--acid-green);
+    color: var(--acid-green);
+    background: rgba(184, 255, 53, 0.08);
+  }
+
+  /* ── PRODUCT GRID ─────────────────────────────────────────────────────── */
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .collection-grid.view-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+
+  .collection-grid.view-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* ── PRODUCT CARD ─────────────────────────────────────────────────────── */
+  .product-card {
+    position: relative;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+    cursor: pointer;
+    transition:
+      transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.32s;
+    animation: fade-up 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .product-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .product-card:hover {
+    transform: translateY(-10px) scale(1.018);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 32px rgba(184,255,53,0.12);
+    border-color: rgba(184, 255, 53, 0.28);
+  }
+
+  /* Stagger animation delays */
+  .product-card:nth-child(1)  { animation-delay: 0.04s; }
+  .product-card:nth-child(2)  { animation-delay: 0.10s; }
+  .product-card:nth-child(3)  { animation-delay: 0.16s; }
+  .product-card:nth-child(4)  { animation-delay: 0.22s; }
+  .product-card:nth-child(5)  { animation-delay: 0.28s; }
+  .product-card:nth-child(6)  { animation-delay: 0.34s; }
+  .product-card:nth-child(7)  { animation-delay: 0.40s; }
+  .product-card:nth-child(8)  { animation-delay: 0.46s; }
+  .product-card:nth-child(n+9){ animation-delay: 0.52s; }
+
+  /* Image */
+  .card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: var(--bg-elevated);
+  }
+
+  .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .product-card:hover .card-img-wrap img {
+    transform: scale(1.09);
+  }
+
+  /* Image placeholder / fallback */
+  .card-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-elevated);
+    font-family: "Unbounded", sans-serif;
+    font-size: 2.4rem;
+    color: var(--text-muted);
+    letter-spacing: -0.04em;
+  }
+
+  /* Overlay quick-action */
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,8,16,0.7) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.28s;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+    z-index: 3;
+    gap: 8px;
+  }
+
+  .product-card:hover .card-overlay {
+    opacity: 1;
+  }
+
+  .overlay-btn {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 9999px;
+    border: none;
+    font-family: "Unbounded", sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .overlay-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .overlay-btn-cart {
+    background: var(--acid-green);
+    color: #080810;
+    box-shadow: 0 0 24px rgba(184,255,53,0.55);
+  }
+
+  .overlay-btn-wish {
+    flex: 0 0 40px;
+    padding: 10px;
+    background: rgba(255,255,255,0.12);
+    color: var(--text-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Badges */
+  .card-badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .card-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-family: "Unbounded", sans-serif;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge-new  { background: var(--acid-green); color: #080810; }
+  .badge-sale { background: var(--hot-coral);  color: #fff; box-shadow: 0 0 24px rgba(255,69,87,0.55); }
+  .badge-ltd  { background: var(--lilac);      color: #080810; }
+
+  /* Card body */
+  .card-body {
+    position: relative;
+    z-index: 2;
+    padding: 14px 16px 18px;
+  }
+
+  .card-category {
+    font-family: "Syne", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .card-name {
+    font-family: "Unbounded", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .card-price {
+    font-family: "Unbounded", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .card-price-original {
+    font-family: "Syne", sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    margin-left: 5px;
+  }
+
+  .card-price-sale { color: var(--hot-coral); }
+
+  .card-add-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+  }
+
+  .card-add-btn:hover {
+    background: var(--acid-green);
+    border-color: var(--acid-green);
+    color: #080810;
+    transform: scale(1.18) rotate(90deg);
+    box-shadow: 0 0 16px rgba(184,255,53,0.5);
+  }
+
+  /* ── LIST VIEW CARD ───────────────────────────────────────────────────── */
+  .collection-grid.view-list .product-card {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .collection-grid.view-list .card-img-wrap {
+    width: 120px;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
+  }
+
+  .collection-grid.view-list .card-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    gap: 16px;
+  }
+
+  .collection-grid.view-list .card-name {
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    white-space: normal;
+  }
+
+  .collection-grid.view-list .card-footer {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    min-width: 100px;
+  }
+
+  /* ── SKELETON ─────────────────────────────────────────────────────────── */
+  .skeleton-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .skeleton-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(90deg, var(--bg-elevated) 25%, rgba(255,255,255,0.05) 50%, var(--bg-elevated) 75%);
+    background-size: 1200px 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  .skeleton-body {
+    padding: 14px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .skeleton-line {
+    height: 10px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--bg-elevated) 25%, rgba(255,255,255,0.05) 50%, var(--bg-elevated) 75%);
+    background-size: 1200px 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  .skeleton-line.w-60 { width: 60%; }
+  .skeleton-line.w-40 { width: 40%; }
+  .skeleton-line.w-80 { width: 80%; }
+
+  /* ── EMPTY STATE ──────────────────────────────────────────────────────── */
+  .empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    opacity: 0.3;
+  }
+
+  .empty-state h3 {
+    font-family: "Unbounded", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  .empty-state p {
+    font-size: 0.85rem;
+    max-width: 260px;
+    color: var(--text-muted);
+  }
+
+  /* ── RESPONSIVE ───────────────────────────────────────────────────────── */
+  @media (max-width: 1200px) {
+    .collection-grid { grid-template-columns: repeat(3, 1fr); }
+    .collection-grid.view-2 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 900px) {
+    .collection-grid { grid-template-columns: repeat(2, 1fr); }
+    .collection-grid.view-2 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .collection-page { padding-block: 80px 60px; }
+    .collection-header { margin-bottom: 36px; text-align: center; }
+    .collection-meta { flex-direction: column; align-items: center; gap: 12px; }
+    .collection-meta p { text-align: center; }
+    .filter-bar { justify-content: center; }
+    .collection-toolbar { flex-direction: column; align-items: flex-start; }
+    .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .collection-grid.view-2 { grid-template-columns: 1fr; }
+    .collection-grid.view-list .card-img-wrap { width: 90px; }
+    .collection-header::after { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .collection-title { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+    .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .card-body { padding: 10px 12px 14px; }
+    .card-name { font-size: 0.74rem; }
+    .card-price { font-size: 0.82rem; }
+  }
+
+  /* ── KEYFRAMES ────────────────────────────────────────────────────────── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shimmer {
+    from { background-position: -600px 0; }
+    to   { background-position: 600px 0; }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(184,255,53,0.5); }
+    50%       { box-shadow: 0 0 20px rgba(184,255,53,1); }
+  }
+`;
+
+// ─── Helper ────────────────────────────────────────────────────────────────────
+const CATEGORY_ICONS = {
+  all: "✦",
+  trousers: "◎",
+  combo: "◈",
+  shirts: "◉",
+  hoodies: "◑",
+  jackets: "◐",
+};
+
+const CATEGORY_LABELS = {
+  all: "All Drops",
+  trousers: "Trousers",
+  combo: "Combo Sets",
+  shirts: "Shirts",
+  hoodies: "Hoodies",
+  jackets: "Jackets",
+};
+
+// Grid / List icons
+const GridIcon4 = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <rect x="0" y="0" width="6" height="6" rx="1" fill="currentColor"/>
+    <rect x="8" y="0" width="6" height="6" rx="1" fill="currentColor"/>
+    <rect x="0" y="8" width="6" height="6" rx="1" fill="currentColor"/>
+    <rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor"/>
+  </svg>
+);
+const GridIcon2 = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <rect x="0" y="0" width="5" height="14" rx="1" fill="currentColor"/>
+    <rect x="9" y="0" width="5" height="14" rx="1" fill="currentColor"/>
+  </svg>
+);
+const ListIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <rect x="0" y="0" width="14" height="3" rx="1" fill="currentColor"/>
+    <rect x="0" y="5.5" width="14" height="3" rx="1" fill="currentColor"/>
+    <rect x="0" y="11" width="14" height="3" rx="1" fill="currentColor"/>
+  </svg>
+);
+
+// ─── Inline ProductCard ────────────────────────────────────────────────────────
+const ProductCard = ({ product, addToCart, viewMode }) => {
+  const [wished, setWished] = useState(false);
+  const [adding, setAdding] = useState(false);
+
+  const handleAdd = (e) => {
+    e.stopPropagation();
+    setAdding(true);
+    addToCart(product);
+    setTimeout(() => setAdding(false), 700);
+  };
+
+  const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+
+  return (
+    <div className="product-card">
+      {/* Badges */}
+      <div className="card-badges">
+        {product.isNew && <span className="card-badge badge-new">New</span>}
+        {hasDiscount && <span className="card-badge badge-sale">Sale</span>}
+        {product.isLimited && <span className="card-badge badge-ltd">Ltd</span>}
+      </div>
+
+      {/* Image */}
+      <div className="card-img-wrap">
+        {product.image ? (
+          <img src={product.image} alt={product.name} loading="lazy" />
+        ) : (
+          <div className="card-img-placeholder">
+            {(product.name || "?")[0].toUpperCase()}
+          </div>
+        )}
+
+        {/* Hover overlay */}
+        <div className="card-overlay">
+          <button className="overlay-btn overlay-btn-cart" onClick={handleAdd}>
+            {adding ? "✓ Added" : "Quick Add"}
+          </button>
+          <button
+            className="overlay-btn overlay-btn-wish"
+            onClick={(e) => { e.stopPropagation(); setWished(w => !w); }}
+            aria-label="Wishlist"
+          >
+            {wished ? "♥" : "♡"}
+          </button>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="card-body">
+        {product.category && (
+          <div className="card-category">{product.category}</div>
+        )}
+        <div className="card-name">{product.name || "Untitled Product"}</div>
+        <div className="card-footer">
+          <div>
+            <span className={`card-price${hasDiscount ? " card-price-sale" : ""}`}>
+              KSh {(product.price || 0).toLocaleString()}
+            </span>
+            {hasDiscount && (
+              <span className="card-price-original">
+                KSh {product.originalPrice.toLocaleString()}
+              </span>
+            )}
+          </div>
+          <button className="card-add-btn" onClick={handleAdd} aria-label="Add to cart">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+const SkeletonCard = () => (
+  <div className="skeleton-card">
+    <div className="skeleton-img" />
+    <div className="skeleton-body">
+      <div className="skeleton-line w-40" />
+      <div className="skeleton-line w-80" />
+      <div className="skeleton-line w-60" />
+    </div>
+  </div>
+);
+
+// ─── MAIN COLLECTION ──────────────────────────────────────────────────────────
+const Collection = () => {
+  const [products, setProducts]   = useState([]);
+  const [filtered, setFiltered]   = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [activeCat, setActiveCat] = useState("all");
+  const [viewMode, setViewMode]   = useState("grid4"); // grid4 | grid2 | list
+  const [categories, setCategories] = useState(["all"]);
+
+  const API = "https://inf-ct8e.onrender.com/products/fetch";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(API);
+        const data = await res.json();
+        const items = data.products || [];
+        setProducts(items);
+        setFiltered(items);
+        // Build unique categories from data
+        const cats = ["all", ...new Set(items.map(p => p.category).filter(Boolean))];
+        setCategories(cats);
+      } catch (err) {
+        console.error(err);
+        // Use mock data for demo
+        const mock = Array(8).fill(0).map((_, i) => ({
+          _id: String(i),
+          name: ["Cargo Drop Trouser", "Utility Cargo Set", "Slim Fit Jogger", "Oversized Hoodie",
+                 "Wide Leg Combo", "Acid Wash Tee", "Tech Fleece Jogger", "Statement Cargo"][i],
+          category: ["trousers", "combo", "trousers", "hoodies", "combo", "shirts", "trousers", "combo"][i],
+          price: [2800, 5400, 2200, 3600, 4900, 1800, 2600, 5200][i],
+          originalPrice: [0, 6500, 0, 4200, 0, 0, 3100, 6000][i] || null,
+          isNew: [true, false, false, true, false, true, false, false][i],
+          isLimited: [false, true, false, false, true, false, false, true][i],
+          image: null,
+        }));
+        setProducts(mock);
+        setFiltered(mock);
+        setCategories(["all", "trousers", "combo", "hoodies", "shirts"]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleFilter = (cat) => {
+    setActiveCat(cat);
+    setFiltered(cat === "all" ? products : products.filter(p => p.category === cat));
+  };
+
+  const addToCart = (product) => {
+    console.log("Added to cart:", product);
+  };
+
+  const gridClass = {
+    grid4: "",
+    grid2: "view-2",
+    list:  "view-list",
+  }[viewMode];
+
+  return (
+    <>
+      <style>{styles}</style>
+
+      <section className="collection-page container">
+
+        {/* ── HEADER ── */}
+        <div className="collection-header animate-fade-up">
+          <div className="collection-eyebrow">SS25 Season</div>
+          <h1 className="collection-title">
+            The
+            <span className="accent">Collection</span>
+          </h1>
+          <div className="collection-meta">
+            <p>Discover the latest drops. Crafted for the streets, built for the bold.</p>
+            <div className="collection-count">
+              <span className="dot" />
+              {loading ? "Loading…" : `${filtered.length} pieces`}
+            </div>
+          </div>
+        </div>
+
+        {/* ── FILTER BAR ── */}
+        <div className="filter-bar animate-fade-up delay-1">
+          <span className="filter-label">Filter</span>
+          {categories.map(cat => (
+            <button
+              key={cat}
+              className={`filter-tag ${activeCat === cat ? "active" : ""}`}
+              onClick={() => handleFilter(cat)}
+            >
+              <span className="tag-dot" />
+              {CATEGORY_ICONS[cat] || "◆"} {CATEGORY_LABELS[cat] || cat}
+            </button>
+          ))}
+        </div>
+
+        {/* ── TOOLBAR ── */}
+        <div className="collection-toolbar animate-fade-up delay-2">
+          <div className="results-info">
+            {loading
+              ? "Loading products…"
+              : <><span>{filtered.length}</span> products found</>
+            }
+          </div>
+          <div className="view-toggle">
+            <button
+              className={`view-btn ${viewMode === "grid4" ? "active" : ""}`}
+              onClick={() => setViewMode("grid4")}
+              title="4-column grid"
+            >
+              <GridIcon4 />
+            </button>
+            <button
+              className={`view-btn ${viewMode === "grid2" ? "active" : ""}`}
+              onClick={() => setViewMode("grid2")}
+              title="2-column grid"
+            >
+              <GridIcon2 />
+            </button>
+            <button
+              className={`view-btn ${viewMode === "list" ? "active" : ""}`}
+              onClick={() => setViewMode("list")}
+              title="List view"
+            >
+              <ListIcon />
+            </button>
+          </div>
+        </div>
+
+        {/* ── GRID ── */}
+        <div className={`collection-grid ${gridClass}`}>
+          {loading
+            ? Array(8).fill(0).map((_, i) => <SkeletonCard key={i} />)
+            : filtered.length === 0
+              ? (
+                <div className="empty-state">
+                  <div className="empty-icon">◎</div>
+                  <h3>No pieces found</h3>
+                  <p>Try a different filter or check back for new drops.</p>
+                </div>
+              )
+              : filtered.map(product => (
+                <ProductCard
+                  key={product._id}
+                  product={product}
+                  addToCart={addToCart}
+                  viewMode={viewMode}
+                />
+              ))
+          }
+        </div>
+
+      </section>
+    </>
+  );
+};
+
+export default Collection;

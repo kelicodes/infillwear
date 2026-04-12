@@ -1,0 +1,67 @@
+/* =========================================================
+   NEW ARRIVALS SECTION
+   ========================================================= */
+
+.new-arrivals {
+  position: relative;
+}
+
+/* ─── HEADER ───────────────────────── */
+.new-header {
+  margin-bottom: 32px;
+}
+
+.new-header p {
+  max-width: 420px;
+  margin-top: 10px;
+}
+
+/* ─── SCROLL CONTAINER ───────────────── */
+.new-scroll {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+
+  scroll-snap-type: x mandatory;
+}
+
+/* hide scrollbar (clean look) */
+.new-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── ITEM ─────────────────────────── */
+.new-item {
+  min-width: 260px;
+  flex-shrink: 0;
+
+  scroll-snap-align: start;
+}
+
+/* ─── SKELETON ─────────────────────── */
+.new-skeleton {
+  width: 260px;
+  height: 360px;
+  border-radius: var(--radius);
+}
+
+/* ─── HOVER SCROLL EFFECT ─────────── */
+.new-scroll:hover {
+  cursor: grab;
+}
+
+.new-scroll:active {
+  cursor: grabbing;
+}
+
+/* ─── RESPONSIVE ──────────────────── */
+@media (max-width: 768px) {
+  .new-header {
+    text-align: center;
+  }
+
+  .new-item {
+    min-width: 220px;
+  }
+}
