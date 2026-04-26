@@ -3,7 +3,7 @@ import axios from "axios";
 import ProductCard from "../../Components/Card/Card"
 import "./Ourcollection.css";
 
-const API = "https://inf-ct8e.onrender.com/products/fetch";
+const API = "https://inf-1-udgs.onrender.com/products/fetch";
 
 const Collection = () => {
   const [products, setProducts] = useState([]);

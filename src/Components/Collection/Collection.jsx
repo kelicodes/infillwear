@@ -4,7 +4,7 @@ import ProductCard from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 import "./Collection.css";
 
-const API = "https://inf-ct8e.onrender.com/products/fetch";
+const API = "https://inf-1-udgs.onrender.com/products/fetch";
 
 const Collection = () => {
   const [products, setProducts] = useState([]);

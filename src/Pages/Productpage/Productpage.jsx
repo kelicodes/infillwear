@@ -4,7 +4,7 @@ import axios from "axios";
 import "./Productpage.css";
 
 /* ─── CONFIG ─────────────────────────────────────────────────────────────── */
-const API            = "https://inf-ct8e.onrender.com/products/fetch";
+const API            = "https://inf-1-udgs.onrender.com/products/fetch";
 const WHATSAPP_NUMBER = "254700000000"; // ← replace with your client's number
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
