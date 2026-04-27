@@ -11,54 +11,62 @@
 
 html, body {
   scroll-behavior: smooth;
-  font-family: "Unbounded", "Syne", sans-serif;
+  font-family: "Barlow Condensed", "Bebas Neue", sans-serif;
 }
 
 /* =========================================================
-   ROOT VARIABLES
+   ROOT VARIABLES — BEO Apparel & Accessories
    ========================================================= */
 :root {
   /* ─── CORE PALETTE ───────────────────────────────────── */
-  --bg-main:       #080810;          /* near-black with blue tint   */
-  --bg-surface:    #0e0e1c;          /* card base                   */
-  --bg-elevated:   #141428;          /* elevated layer              */
+  --bg-main:       #080808;          /* deep black                  */
+  --bg-surface:    #111111;          /* card base                   */
+  --bg-elevated:   #1a1a1a;          /* elevated layer              */
   --bg-glass:      rgba(255, 255, 255, 0.04);
   --bg-glass-mid:  rgba(255, 255, 255, 0.08);
 
-  --text-primary:   #f0f0ff;
-  --text-secondary: #8888aa;
-  --text-muted:     #44445a;
+  --text-primary:   #ffffff;
+  --text-secondary: #aaaaaa;
+  --text-muted:     #555555;
 
-  /* ─── BRAND ACCENTS ─────────────────────────────────── */
-  --acid-green:   #b8ff35;           /* main CTA / hero accent      */
-  --volt:         #e0ff00;           /* electric yellow-green       */
-  --hot-coral:    #ff4557;           /* urgency / sale badges       */
-  --ice-blue:     #4df4ff;           /* secondary accent            */
-  --lilac:        #c084fc;           /* softer accent / tags        */
+  /* ─── BRAND ACCENTS — BEO Yellow/Gold + White ────────── */
+  --beo-yellow:   #ffd000;           /* primary BEO gold/yellow     */
+  --beo-gold:     #f5a800;           /* deeper amber-gold           */
+  --beo-white:    #ffffff;           /* sharp white                 */
+  --beo-light:    #fff4b3;           /* soft yellow tint            */
+  --beo-dark:     #cc9900;           /* dark gold for borders       */
+
+  /* ─── LEGACY NAMES → BEO MAPPED ────────────────────────
+     (kept so existing references still compile)            */
+  --acid-green:   #ffd000;           /* → BEO yellow                */
+  --volt:         #ffc200;           /* → BEO amber                 */
+  --hot-coral:    #ff6600;           /* urgency / sale badges       */
+  --ice-blue:     #ffe066;           /* → warm highlight            */
+  --lilac:        #f5a800;           /* → BEO gold                  */
 
   /* ─── GRADIENTS ─────────────────────────────────────── */
-  --grad-primary:    linear-gradient(135deg, #b8ff35 0%, #4df4ff 100%);
-  --grad-fire:       linear-gradient(135deg, #ff4557 0%, #ff9a3c 100%);
-  --grad-purple:     linear-gradient(135deg, #c084fc 0%, #4df4ff 100%);
+  --grad-primary:    linear-gradient(135deg, #ffd000 0%, #f5a800 100%);
+  --grad-fire:       linear-gradient(135deg, #ff6600 0%, #ffd000 100%);
+  --grad-purple:     linear-gradient(135deg, #f5a800 0%, #ffd000 100%);
   --grad-card-shine: linear-gradient(
                        135deg,
-                       rgba(255,255,255,0.06) 0%,
-                       rgba(255,255,255,0.01) 50%,
-                       rgba(255,255,255,0.0) 100%
+                       rgba(255, 208, 0,  0.07) 0%,
+                       rgba(255, 255, 255, 0.02) 50%,
+                       rgba(255, 255, 255, 0.0)  100%
                      );
 
   /* ─── GLOW / SHADOW ─────────────────────────────────── */
-  --glow-green:  0 0 24px rgba(184, 255, 53,  0.55);
-  --glow-coral:  0 0 24px rgba(255,  69, 87,  0.55);
-  --glow-ice:    0 0 24px rgba( 77, 244, 255, 0.45);
-  --shadow-lift: 0 20px 60px rgba(0, 0, 0, 0.55);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --glow-green:  0 0 24px rgba(255, 208,   0, 0.60);
+  --glow-coral:  0 0 24px rgba(255, 102,   0, 0.55);
+  --glow-ice:    0 0 24px rgba(245, 168,   0, 0.45);
+  --shadow-lift: 0 20px 60px rgba(0, 0, 0, 0.70);
+  --shadow-card: 0 4px 24px  rgba(0, 0, 0, 0.55);
 
   /* ─── SHAPE & SPACE ─────────────────────────────────── */
-  --radius-xs:  6px;
-  --radius-sm:  12px;
-  --radius:     18px;
-  --radius-lg:  28px;
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius:      12px;
+  --radius-lg:   18px;
   --radius-pill: 9999px;
 
   /* ─── MOTION ────────────────────────────────────────── */
@@ -75,9 +83,11 @@ html, body {
 }
 
 /* =========================================================
-   GOOGLE FONT IMPORT  (Unbounded = chunky display / Syne = editorial)
+   GOOGLE FONT IMPORT
+   Barlow Condensed = high-impact athletic display
+   Barlow = clean, sporty body
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Syne:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@400;500;600&family=Bebas+Neue&display=swap');
 
 /* =========================================================
    BASE
@@ -85,9 +95,9 @@ html, body {
 body {
   background-color: var(--bg-main);
   background-image:
-    radial-gradient(ellipse 80% 50% at 20% -10%,  rgba(184, 255,  53, 0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 85%  10%,  rgba( 77, 244, 255, 0.07) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 30% at 50% 100%,  rgba(192, 132, 252, 0.06) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 50% at 20% -10%,  rgba(255, 208,  0, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85%  10%,  rgba(245, 168,  0, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 30% at 50% 100%,  rgba(255, 102,  0, 0.04) 0%, transparent 60%);
   background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;
@@ -95,13 +105,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Grain overlay — gives a streetwear / zine texture */
+/* Subtle grain overlay — streetwear / zine texture */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.028;
+  opacity: 0.025;
   pointer-events: none;
   z-index: 9999;
 }
@@ -118,16 +128,19 @@ body::before {
    TYPOGRAPHY
    ========================================================= */
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Unbounded", sans-serif;
+  font-family: "Barlow Condensed", "Bebas Neue", sans-serif;
   font-weight: 900;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
   color: var(--text-primary);
 }
 
 /* Display hero size */
 .text-display {
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
@@ -147,7 +160,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-  font-family: "Syne", sans-serif;
+  font-family: "Barlow", sans-serif;
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.7;
@@ -160,7 +173,7 @@ a {
 }
 
 a:hover {
-  color: var(--acid-green);
+  color: var(--beo-yellow);
 }
 
 /* =========================================================
@@ -171,14 +184,14 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 28px;
-  border-radius: var(--radius-pill);
+  padding: 13px 28px;
+  border-radius: var(--radius-xs);          /* BEO: sharp corners, not pills */
   border: none;
   cursor: pointer;
-  font-family: "Unbounded", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   transition:
     transform  var(--t-fast) var(--ease-bounce),
@@ -187,16 +200,16 @@ a:hover {
   white-space: nowrap;
 }
 
-/* — Primary: acid green CTA — */
+/* — Primary: BEO yellow CTA — */
 .btn-primary {
-  background: var(--acid-green);
-  color: #080810;
+  background: var(--beo-yellow);
+  color: #080808;
   box-shadow: var(--glow-green);
 }
 
 .btn-primary:hover {
-  transform: scale(1.06) translateY(-2px);
-  box-shadow: 0 0 40px rgba(184, 255, 53, 0.75);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 0 40px rgba(255, 208, 0, 0.75);
 }
 
 .btn-primary:active {
@@ -207,12 +220,12 @@ a:hover {
 .btn-secondary {
   background: transparent;
   color: var(--text-primary);
-  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.25);
 }
 
 .btn-secondary:hover {
-  border-color: var(--acid-green);
-  color: var(--acid-green);
+  border-color: var(--beo-yellow);
+  color: var(--beo-yellow);
   box-shadow: var(--glow-green);
   transform: scale(1.04);
 }
@@ -220,13 +233,13 @@ a:hover {
 /* — Danger / Sale — */
 .btn-fire {
   background: var(--grad-fire);
-  color: #fff;
+  color: #080808;
   box-shadow: var(--glow-coral);
 }
 
 .btn-fire:hover {
   transform: scale(1.06) translateY(-2px);
-  box-shadow: 0 0 40px rgba(255, 69, 87, 0.7);
+  box-shadow: 0 0 40px rgba(255, 102, 0, 0.7);
 }
 
 /* — Icon-only button — */
@@ -237,13 +250,13 @@ a:hover {
   border-radius: var(--radius-sm);
   background: var(--bg-glass-mid);
   color: var(--text-primary);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-icon:hover {
   background: var(--bg-elevated);
-  border-color: var(--acid-green);
-  color: var(--acid-green);
+  border-color: var(--beo-yellow);
+  color: var(--beo-yellow);
 }
 
 /* =========================================================
@@ -257,8 +270,8 @@ a:hover {
   overflow: hidden;
   box-shadow: var(--shadow-card);
   transition:
-    transform  var(--t-mid) var(--ease-bounce),
-    box-shadow var(--t-mid) var(--ease-out),
+    transform    var(--t-mid) var(--ease-bounce),
+    box-shadow   var(--t-mid) var(--ease-out),
     border-color var(--t-mid);
 }
 
@@ -273,9 +286,9 @@ a:hover {
 }
 
 .card:hover {
-  transform: translateY(-8px) scale(1.015);
-  box-shadow: var(--shadow-lift), 0 0 32px rgba(184, 255, 53, 0.12);
-  border-color: rgba(184, 255, 53, 0.25);
+  transform: translateY(-6px) scale(1.012);
+  box-shadow: var(--shadow-lift), 0 0 32px rgba(255, 208, 0, 0.15);
+  border-color: rgba(255, 208, 0, 0.30);
 }
 
 /* Product image wrapper */
@@ -295,7 +308,7 @@ a:hover {
 }
 
 .card:hover .card-media img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .card-body {
@@ -308,26 +321,26 @@ a:hover {
 .badge {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  font-family: "Unbounded", sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  border-radius: var(--radius-xs);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.badge-new    { background: var(--acid-green);  color: #080810; }
-.badge-sale   { background: var(--hot-coral);   color: #fff;    box-shadow: var(--glow-coral); }
-.badge-ltd    { background: var(--lilac);        color: #080810; }
-.badge-hype   {
+.badge-new  { background: var(--beo-yellow); color: #080808; }
+.badge-sale { background: var(--hot-coral);  color: #fff;    box-shadow: var(--glow-coral); }
+.badge-ltd  { background: var(--beo-gold);   color: #080808; }
+.badge-hype {
   background: var(--grad-fire);
-  color: #fff;
+  color: #080808;
   animation: hype-pulse 1.8s ease-in-out infinite;
 }
 
 @keyframes hype-pulse {
   0%, 100% { box-shadow: var(--glow-coral); }
-  50%       { box-shadow: 0 0 40px rgba(255, 69, 87, 0.9); }
+  50%       { box-shadow: 0 0 40px rgba(255, 102, 0, 0.9); }
 }
 
 /* =========================================================
@@ -339,11 +352,11 @@ select {
   width: 100%;
   padding: 13px 16px;
   border-radius: var(--radius-sm);
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   background: var(--bg-glass);
   backdrop-filter: var(--blur-sm);
   color: var(--text-primary);
-  font-family: "Syne", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 0.9rem;
   outline: none;
   transition:
@@ -360,9 +373,9 @@ textarea::placeholder {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: var(--acid-green);
+  border-color: var(--beo-yellow);
   background: var(--bg-glass-mid);
-  box-shadow: 0 0 0 3px rgba(184, 255, 53, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.15);
 }
 
 input:focus::placeholder,
@@ -373,10 +386,10 @@ textarea:focus::placeholder {
 /* ─── Label ─────────────────────────────────────────────── */
 label {
   display: block;
-  font-family: "Unbounded", sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary);
   margin-bottom: 6px;
@@ -396,26 +409,24 @@ label {
   justify-content: space-between;
   padding: 0 5%;
   height: 64px;
-  background: rgba(8, 8, 16, 0.72);
+  background: rgba(8, 8, 8, 0.80);
   backdrop-filter: var(--blur);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   transition: background var(--t-mid);
 }
 
 .nav--scrolled {
-  background: rgba(8, 8, 16, 0.95);
-  border-bottom-color: rgba(184, 255, 53, 0.1);
+  background: rgba(8, 8, 8, 0.97);
+  border-bottom-color: rgba(255, 208, 0, 0.20);
 }
 
 .nav-logo {
-  font-family: "Unbounded", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  background: var(--grad-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--beo-yellow);
+  text-shadow: 0 0 20px rgba(255, 208, 0, 0.4);
 }
 
 .nav-links {
@@ -426,11 +437,12 @@ label {
 }
 
 .nav-links a {
-  font-family: "Syne", sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   position: relative;
 }
 
@@ -441,8 +453,8 @@ label {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--grad-primary);
-  border-radius: var(--radius-pill);
+  background: var(--beo-yellow);
+  border-radius: 0;
   transition: width var(--t-fast) var(--ease-out);
 }
 
@@ -461,13 +473,15 @@ label {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  font-family: "Syne", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-xs);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   background: var(--bg-glass-mid);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-secondary);
   cursor: pointer;
   transition:
@@ -479,24 +493,25 @@ label {
 
 .tag:hover,
 .tag.active {
-  background: rgba(184, 255, 53, 0.1);
-  border-color: var(--acid-green);
-  color: var(--acid-green);
-  box-shadow: 0 0 12px rgba(184, 255, 53, 0.2);
+  background: rgba(255, 208, 0, 0.12);
+  border-color: var(--beo-yellow);
+  color: var(--beo-yellow);
+  box-shadow: 0 0 10px rgba(255, 208, 0, 0.20);
 }
 
 /* =========================================================
    PRICE DISPLAY
    ========================================================= */
 .price {
-  font-family: "Unbounded", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   color: var(--text-primary);
 }
 
 .price-original {
-  font-family: "Syne", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   color: var(--text-muted);
@@ -505,7 +520,7 @@ label {
 }
 
 .price-sale {
-  color: var(--hot-coral);
+  color: var(--beo-yellow);
 }
 
 /* =========================================================
@@ -528,12 +543,12 @@ label {
   background: linear-gradient(
     to right,
     transparent,
-    var(--acid-green) 30%,
-    var(--ice-blue)   70%,
+    var(--beo-yellow) 30%,
+    var(--beo-gold)   70%,
     transparent
   );
   margin: 32px 0;
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 /* =========================================================
@@ -581,24 +596,24 @@ label {
 .glass {
   background: var(--bg-glass);
   backdrop-filter: var(--blur);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius);
 }
 
 .glass-elevated {
   background: var(--bg-glass-mid);
   backdrop-filter: var(--blur-lg);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 208, 0, 0.12);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lift);
 }
 
 /* =========================================================
-   TICKER / MARQUEE STRIP (TikTok vibes)
+   TICKER / MARQUEE STRIP
    ========================================================= */
 .ticker-wrap {
   overflow: hidden;
-  background: var(--acid-green);
+  background: var(--beo-yellow);
   padding: 10px 0;
   white-space: nowrap;
 }
@@ -610,12 +625,12 @@ label {
 }
 
 .ticker-item {
-  font-family: "Unbounded", sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-family: "Barlow Condensed", "Bebas Neue", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #080810;
+  color: #080808;
   flex-shrink: 0;
 }
 
@@ -628,15 +643,15 @@ label {
    ANIMATIONS
    ========================================================= */
 
-/* Glow pulse (keep on elements that are 🔥 live / CTA) */
+/* Glow pulse */
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(184, 255, 53, 0.4); }
-  50%       { box-shadow: 0 0 32px rgba(184, 255, 53, 0.85); }
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 208, 0, 0.4); }
+  50%       { box-shadow: 0 0 32px rgba(255, 208, 0, 0.85); }
 }
 
-.glow         { animation: glow-pulse 2.2s ease-in-out infinite; }
+.glow { animation: glow-pulse 2.2s ease-in-out infinite; }
 
-/* Fade-up (reveal on scroll / page load) */
+/* Fade-up */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0);    }
@@ -651,20 +666,31 @@ label {
 .animate-fade-up.delay-3 { animation-delay: 0.36s; }
 .animate-fade-up.delay-4 { animation-delay: 0.52s; }
 
-/* Spin for loading states */
+/* Spin */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
 .spin { animation: spin 0.9s linear infinite; }
 
-/* Float (hero product image) */
+/* Float */
 @keyframes float {
   0%, 100% { transform: translateY(0px);   }
   50%       { transform: translateY(-12px); }
 }
 
 .float { animation: float 4s ease-in-out infinite; }
+
+/* ─── BEO Lightning Strike — for hero CTAs ──────────────── */
+@keyframes strike {
+  0%   { clip-path: inset(0 100% 0 0); }
+  60%  { clip-path: inset(0 0%   0 0); }
+  100% { clip-path: inset(0 0%   0 0); }
+}
+
+.animate-strike {
+  animation: strike 0.6s var(--ease-out) both;
+}
 
 /* =========================================================
    NOTIFICATION / TOAST
@@ -680,7 +706,7 @@ label {
   background: var(--bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-lift);
-  font-family: "Syne", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 0.85rem;
   color: var(--text-primary);
   display: flex;
@@ -689,9 +715,9 @@ label {
   animation: fade-up 0.3s var(--ease-bounce) both;
 }
 
-.toast-success { border-left: 3px solid var(--acid-green); }
+.toast-success { border-left: 3px solid var(--beo-yellow); }
 .toast-error   { border-left: 3px solid var(--hot-coral);  }
-.toast-info    { border-left: 3px solid var(--ice-blue);   }
+.toast-info    { border-left: 3px solid var(--beo-gold);   }
 
 /* =========================================================
    SKELETON LOADER
@@ -705,7 +731,7 @@ label {
   background: linear-gradient(
     90deg,
     var(--bg-elevated) 25%,
-    rgba(255,255,255,0.05) 50%,
+    rgba(255, 208, 0, 0.04) 50%,
     var(--bg-elevated) 75%
   );
   background-size: 1200px 100%;
@@ -718,8 +744,8 @@ label {
    ========================================================= */
 @media (max-width: 768px) {
   :root {
-    --radius:    14px;
-    --radius-lg: 20px;
+    --radius:    10px;
+    --radius-lg: 16px;
   }
 
   .section    { padding-block: 56px; }

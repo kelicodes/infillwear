@@ -1,112 +1,672 @@
 /* =========================================================
-   NAVBAR ENHANCEMENTS (builds on your global .nav)
+   BEO NAVBAR — Apparel & Accessories
+   Builds on global.css variables
    ========================================================= */
 
-.nav {
-  transition:
-    background var(--t-mid),
-    box-shadow var(--t-mid),
-    border-color var(--t-mid);
-}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap');
 
-/* Glow edge when scrolled */
-.nav--scrolled {
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+/* ─── Reset scoped to nav ─────────────────────────────── */
+.beo-nav *,
+.beo-nav *::before,
+.beo-nav *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* =========================================================
-   LINKS
+   NAV SHELL
    ========================================================= */
-
-.nav-links {
-  transition: transform var(--t-mid) var(--ease-out),
-              opacity   var(--t-mid);
+.beo-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  background: rgba(8, 8, 8, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition:
+    background var(--t-mid, 0.32s) var(--ease-out, ease),
+    border-color var(--t-mid, 0.32s),
+    box-shadow var(--t-mid, 0.32s);
 }
 
-.nav-links li {
+.beo-nav--scrolled {
+  background: rgba(8, 8, 8, 0.96);
+  border-bottom-color: rgba(255, 208, 0, 0.18);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.7),
+    0 1px 0 rgba(255, 208, 0, 0.06);
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+.beo-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  user-select: none;
+  flex-shrink: 0;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.beo-logo:hover {
+  transform: scale(1.04);
+}
+
+/* The yellow bolt badge */
+.beo-logo-badge {
+  width: 40px;
+  height: 40px;
+  background: var(--beo-yellow, #ffd000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+  flex-shrink: 0;
+  transition:
+    box-shadow 0.18s ease,
+    clip-path 0.18s ease;
+}
+
+.beo-logo:hover .beo-logo-badge {
+  box-shadow: 0 0 28px rgba(255, 208, 0, 0.8);
+  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+}
+
+.beo-logo-badge svg {
+  width: 20px;
+  height: 20px;
+  fill: #080808;
+}
+
+.beo-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1;
+}
+
+.beo-logo-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  color: var(--beo-yellow, #ffd000);
+  text-shadow: 0 0 20px rgba(255, 208, 0, 0.35);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.beo-logo-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* =========================================================
+   CENTER NAV LINKS
+   ========================================================= */
+.beo-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   list-style: none;
 }
 
-/* Hover glow underline enhancement */
-.nav-links a:hover {
-  text-shadow: 0 0 10px rgba(184, 255, 53, 0.5);
+.beo-nav-links li a,
+.beo-nav-links li .beo-nav-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 16px;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+  white-space: nowrap;
+}
+
+.beo-nav-links li a:hover,
+.beo-nav-links li .beo-nav-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 208, 0, 0.08);
+}
+
+/* Active state — yellow underline bar */
+.beo-nav-links li a.active,
+.beo-nav-links li .beo-nav-btn.active {
+  color: var(--beo-yellow, #ffd000);
+}
+
+.beo-nav-links li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 8px; right: 8px;
+  height: 2px;
+  background: var(--beo-yellow, #ffd000);
+  box-shadow: 0 0 8px rgba(255, 208, 0, 0.6);
+}
+
+/* LIVE badge on Drops */
+.beo-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: var(--hot-coral, #ff6600);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+.beo-live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  animation: live-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(255, 102, 0, 0.5); }
+  50%       { box-shadow: 0 0 14px rgba(255, 102, 0, 0.9); }
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
 }
 
 /* =========================================================
-   ACTIONS
+   DROPDOWN (Shop)
    ========================================================= */
+.beo-dropdown-wrap {
+  position: relative;
+}
 
-.nav-actions {
+.beo-dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  width: 230px;
+  background: rgba(12, 12, 12, 0.98);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 208, 0, 0.12);
+  border-radius: 6px;
+  padding: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 208, 0, 0.04) inset;
+}
+
+/* Tip arrow */
+.beo-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -5px; left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: rgba(12, 12, 12, 0.98);
+  border-left: 1px solid rgba(255, 208, 0, 0.12);
+  border-top: 1px solid rgba(255, 208, 0, 0.12);
+}
+
+.beo-dropdown-wrap:hover .beo-dropdown,
+.beo-dropdown-wrap:focus-within .beo-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.beo-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.beo-dropdown a:hover {
+  background: rgba(255, 208, 0, 0.1);
+  color: var(--beo-yellow, #ffd000);
+}
+
+.beo-dropdown-icon {
+  width: 30px; height: 30px;
+  border-radius: 4px;
+  background: rgba(255, 208, 0, 0.06);
+  border: 1px solid rgba(255, 208, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.beo-dropdown a:hover .beo-dropdown-icon {
+  background: rgba(255, 208, 0, 0.14);
+  border-color: rgba(255, 208, 0, 0.3);
+}
+
+.beo-dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 6px 4px;
+}
+
+.beo-dropdown-arrow {
+  margin-left: auto;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.beo-dropdown a:hover .beo-dropdown-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* =========================================================
+   RIGHT ACTIONS
+   ========================================================= */
+.beo-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Search pill */
+.beo-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.beo-search:hover {
+  background: rgba(255, 208, 0, 0.07);
+  border-color: rgba(255, 208, 0, 0.2);
+}
+
+.beo-search-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Icon buttons */
+.beo-icon-btn {
+  position: relative;
+  width: 42px; height: 42px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    color 0.18s,
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s;
+}
+
+.beo-icon-btn:hover {
+  background: rgba(255, 208, 0, 0.08);
+  border-color: rgba(255, 208, 0, 0.25);
+  color: var(--beo-yellow, #ffd000);
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(255, 208, 0, 0.2);
+}
+
+.beo-icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* Cart count badge */
+.beo-cart-count {
+  position: absolute;
+  top: -5px; right: -5px;
+  min-width: 18px; height: 18px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--beo-yellow, #ffd000);
+  color: #080808;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #080808;
+  line-height: 1;
+}
+
+/* Account avatar */
+.beo-avatar {
+  width: 42px; height: 42px;
+  border-radius: 4px;
+  background: var(--beo-yellow, #ffd000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: #080808;
+  cursor: pointer;
+  border: 1px solid rgba(255, 208, 0, 0.3);
+  flex-shrink: 0;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s;
+}
+
+.beo-avatar:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255, 208, 0, 0.55);
+}
+
+/* CTA / Shop Now button */
+.beo-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--beo-yellow, #ffd000);
+  color: #080808;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s;
+  box-shadow: 0 0 16px rgba(255, 208, 0, 0.4);
+  white-space: nowrap;
+}
+
+.beo-cta-btn:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 0 32px rgba(255, 208, 0, 0.7);
+}
+
+.beo-cta-btn:active { transform: scale(0.97); }
+
+/* =========================================================
+   TICKER STRIP
+   ========================================================= */
+.beo-ticker {
+  position: fixed;
+  top: 72px; left: 0; right: 0;
+  z-index: 998;
+  height: 32px;
+  background: var(--beo-yellow, #ffd000);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.beo-ticker-track {
+  display: flex;
+  animation: beo-ticker 30s linear infinite;
+  will-change: transform;
+}
+
+.beo-ticker-track:hover { animation-play-state: paused; }
+
+.beo-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 28px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #080808;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.beo-ticker-sep {
+  width: 4px; height: 4px;
+  background: rgba(8, 8, 8, 0.3);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@keyframes beo-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* =========================================================
+   MOBILE TOGGLE
+   ========================================================= */
+.beo-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 42px; height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.beo-toggle:hover {
+  background: rgba(255, 208, 0, 0.08);
+  border-color: rgba(255, 208, 0, 0.2);
+}
+
+.beo-toggle-bar {
+  width: 18px; height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transform-origin: center;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.18s,
+    width 0.28s;
+}
+
+.beo-toggle.is-open .beo-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  background: var(--beo-yellow, #ffd000);
+}
+.beo-toggle.is-open .beo-toggle-bar:nth-child(2) {
+  opacity: 0; width: 0;
+}
+.beo-toggle.is-open .beo-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  background: var(--beo-yellow, #ffd000);
+}
+
+/* =========================================================
+   MOBILE MENU PANEL
+   ========================================================= */
+.beo-mobile-menu {
+  position: fixed;
+  top: 72px; left: 0; right: 0;
+  background: rgba(8, 8, 8, 0.99);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-bottom: 2px solid rgba(255, 208, 0, 0.15);
+  padding: 16px 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transform: translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 997;
+}
+
+.beo-mobile-menu.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.beo-mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 16px;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border-color 0.18s;
+}
+
+.beo-mobile-link:hover {
+  background: rgba(255, 208, 0, 0.07);
+  border-color: rgba(255, 208, 0, 0.15);
+  color: var(--beo-yellow, #ffd000);
+}
+
+.beo-mobile-link-left {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Logout tweak (make it stand out slightly) */
-.btn-fire {
-  font-size: 0.7rem;
-  padding: 12px 20px;
+.beo-mobile-icon {
+  font-size: 1.1rem;
+  width: 28px;
+  text-align: center;
+}
+
+.beo-mobile-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 10px 0;
+}
+
+.beo-mobile-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.beo-mobile-footer button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.18s, transform 0.18s;
+}
+
+.beo-mobile-footer button:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
+}
+
+.beo-mobile-shop-btn {
+  background: var(--beo-yellow, #ffd000);
+  color: #080808;
+}
+
+.beo-mobile-logout-btn {
+  background: rgba(255, 102, 0, 0.12);
+  color: #ff6600;
+  border: 1px solid rgba(255, 102, 0, 0.25) !important;
 }
 
 /* =========================================================
-   MOBILE MENU
+   RESPONSIVE
    ========================================================= */
-
-.nav-toggle {
-  display: none;
+@media (max-width: 960px) {
+  .beo-nav-links  { display: none; }
+  .beo-search     { display: none; }
+  .beo-cta-btn    { display: none; }
+  .beo-toggle     { display: flex; }
 }
 
-/* Mobile layout */
-@media (max-width: 768px) {
-  .nav-links {
-    position: absolute;
-    top: 64px;
-    left: 0;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-
-    padding: 24px 0;
-
-    background: rgba(8, 8, 16, 0.95);
-    backdrop-filter: var(--blur-lg);
-
-    transform: translateY(-20px);
-    opacity: 0;
-    pointer-events: none;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .nav-links--open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .nav-toggle {
-    display: inline-flex;
-  }
-
-  .nav-links a {
-    font-size: 1rem;
-  }
-}
-
-/* =========================================================
-   MICRO-INTERACTIONS
-   ========================================================= */
-
-/* Cart button pulse on hover */
-.nav-actions .btn-icon:hover {
-  box-shadow: var(--glow-ice);
-  transform: scale(1.08);
-}
-
-/* Logo hover effect */
-.nav-logo:hover {
-  filter: brightness(1.2);
-  transform: scale(1.05);
-  transition: transform var(--t-fast);
+@media (max-width: 520px) {
+  .beo-nav        { padding: 0 5%; }
+  .beo-logo-sub   { display: none; }
+  .beo-icon-btn   { width: 38px; height: 38px; }
+  .beo-avatar     { width: 38px; height: 38px; }
 }

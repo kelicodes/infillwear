@@ -1149,3 +1149,83 @@
     display: none;
   }
 }
+
+/* =========================================================
+   GLOBAL MOBILE OVERFLOW FIX
+   ========================================================= */
+
+/* Make width calculations safe */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal scrolling on page */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Media never exceed parent */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Main wrappers never exceed screen */
+.product-page,
+.product-skeleton-wrap,
+.product-gallery,
+.product-info,
+.related-section,
+.related-grid {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   MOBILE SPECIFIC FIXES
+   ========================================================= */
+@media (max-width: 768px) {
+
+  /* Remove breakout causing overflow */
+  .product-gallery {
+    margin: 0;
+    width: 100%;
+  }
+
+  /* Keep all buttons inside screen */
+  .mobile-cta-bar {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  /* Prevent text pushing layout */
+  .product-title,
+  .product-desc,
+  .price-row,
+  .trust-item,
+  .feature-item,
+  .btn-cart,
+  .btn-whatsapp,
+  .mobile-cart-btn,
+  .mobile-wa-btn {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Related products scroll safely */
+  .related-grid {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
