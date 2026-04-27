@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Productpage.css";
+import { toast } from "react-toastify";
 
 /* ─── CONFIG ─────────────────────────────────────────────────────────────── */
 const BASE_URL        = "https://inf-1-udgs.onrender.com";
@@ -171,6 +172,11 @@ const ProductPage = () => {
     setCartState("adding");
     try {
       const token = localStorage.getItem("token");
+      if(!token){
+        toast.alert("You have to login inorder to add items to cart")
+        navigate("/gin")
+        return 
+      }
       const res   = await fetch(`${BASE_URL}/cart/add`, {
         method: "POST",
         headers: {

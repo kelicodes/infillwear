@@ -91,8 +91,8 @@ const HeroSection = () => {
               <p>Premium Cotton</p>
 
               <div className="neo-price">
-                <span>$39</span>
-                <small>$56</small>
+                <span>KSH39</span>
+                <small>KSH56</small>
               </div>
             </div>
           </div>

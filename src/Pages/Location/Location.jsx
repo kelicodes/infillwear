@@ -99,7 +99,7 @@ const Location = () => {
             </a>
 
             <a
-              href="/products"
+              href="/collection"
               className="btn btn-secondary"
             >
               View Products

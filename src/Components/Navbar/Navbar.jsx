@@ -127,6 +127,7 @@ export default function Navbar() {
           <button
             className={`beo-toggle ${menuOpen ? "is-open" : ""}`}
             onClick={() => setMenuOpen(!menuOpen)}
+            style={{color:"white"}}
           >
             {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
