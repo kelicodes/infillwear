@@ -1,0 +1,761 @@
+/* =========================================================
+   CHECKOUT PAGE — BEO Apparel & Accessories
+   Built on the BEO global design system
+   ========================================================= */
+
+/* ─── PAGE SHELL ─────────────────────────────────────────── */
+.checkout-page {
+  min-height: 100vh;
+  padding-top: calc(64px + 48px);
+}
+
+/* =========================================================
+   STEP PROGRESS INDICATOR
+   ========================================================= */
+.checkout-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 52px;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.step-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  transition:
+    background    var(--t-mid) var(--ease-out),
+    border-color  var(--t-mid),
+    box-shadow    var(--t-mid),
+    color         var(--t-mid);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-step.active .step-dot {
+  background: var(--beo-yellow);
+  border-color: var(--beo-yellow);
+  color: #080808;
+  box-shadow: var(--glow-green);
+}
+
+.progress-step.done .step-dot {
+  background: rgba(255, 208, 0, 0.15);
+  border-color: var(--beo-yellow);
+  color: var(--beo-yellow);
+}
+
+.step-label {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  transition: color var(--t-mid);
+}
+
+.progress-step.active .step-label {
+  color: var(--beo-yellow);
+}
+
+.progress-step.done .step-label {
+  color: var(--text-secondary);
+}
+
+.step-line {
+  width: 80px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0 4px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.progress-step.done + .progress-step .step-line,
+.progress-step.done .step-line {
+  background: linear-gradient(to right, var(--beo-yellow), rgba(255, 208, 0, 0.3));
+}
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  align-items: start;
+  margin-top: 32px; /* room for step labels below dots */
+}
+
+/* =========================================================
+   LEFT PANEL — FORM
+   ========================================================= */
+.checkout-form-panel {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle corner accent */
+.checkout-form-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--beo-yellow);
+}
+
+/* ─── Form section ───────────────────────────────────────── */
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section-title {
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+
+.form-section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--beo-yellow);
+}
+
+/* ─── Form rows ──────────────────────────────────────────── */
+.form-row {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-row.two-col   { grid-template-columns: 1fr 1fr; }
+.form-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+
+/* ─── Field group ────────────────────────────────────────── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field-group:last-child {
+  margin-bottom: 0;
+}
+
+/* ─── Error state ────────────────────────────────────────── */
+.input-error {
+  border-color: var(--hot-coral) !important;
+  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12) !important;
+}
+
+.field-error {
+  font-family: "Barlow", sans-serif;
+  font-size: 0.72rem;
+  color: var(--hot-coral);
+  letter-spacing: 0.02em;
+}
+
+.field-hint {
+  font-family: "Barlow", sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* =========================================================
+   PAYMENT OPTIONS
+   ========================================================= */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.payment-option {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.payment-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.payment-option-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  transition:
+    border-color var(--t-fast),
+    background   var(--t-fast),
+    box-shadow   var(--t-fast);
+}
+
+.payment-option-inner:hover {
+  border-color: rgba(255, 208, 0, 0.25);
+  background: rgba(255, 208, 0, 0.04);
+}
+
+.payment-option.selected .payment-option-inner {
+  border-color: var(--beo-yellow);
+  background: rgba(255, 208, 0, 0.06);
+  box-shadow: 0 0 0 1px rgba(255, 208, 0, 0.2);
+}
+
+/* Selected tick */
+.payment-option.selected .payment-option-inner::after {
+  content: "✓";
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--beo-yellow);
+  font-weight: 800;
+}
+
+.payment-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.payment-option-inner strong {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  display: block;
+}
+
+.payment-option-inner p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-family: "Barlow", sans-serif;
+}
+
+/* ─── Payment extra fields ───────────────────────────────── */
+.payment-fields {
+  background: var(--bg-glass);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   CONFIRM STEP
+   ========================================================= */
+.confirm-block {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.confirm-block-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.confirm-value {
+  font-family: "Barlow", sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.confirm-value--accent {
+  color: var(--beo-yellow);
+  font-weight: 600;
+}
+
+/* ─── Confirm item list ──────────────────────────────────── */
+.confirm-items {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confirm-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.confirm-item img {
+  width: 44px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.confirm-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.confirm-item-info span:first-child {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.confirm-item-info span:last-child {
+  font-family: "Barlow", sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.confirm-item-price {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--beo-yellow);
+  white-space: nowrap;
+}
+
+/* =========================================================
+   NAVIGATION BUTTONS
+   ========================================================= */
+.checkout-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 8px;
+}
+
+.btn-back {
+  padding: 13px 24px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xs);
+  color: var(--text-secondary);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--t-fast),
+    color        var(--t-fast),
+    transform    var(--t-fast) var(--ease-bounce);
+}
+
+.btn-back:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+  transform: translateX(-2px);
+}
+
+.btn-next {
+  margin-left: auto;
+  padding: 14px 32px;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 208, 0, 0.30);
+  border-radius: var(--radius-xs);
+  color: var(--beo-yellow);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background   var(--t-fast) var(--ease-out),
+    border-color var(--t-fast),
+    box-shadow   var(--t-fast),
+    transform    var(--t-fast) var(--ease-bounce);
+}
+
+.btn-next:hover {
+  background: rgba(255, 208, 0, 0.08);
+  border-color: var(--beo-yellow);
+  box-shadow: var(--glow-green);
+  transform: translateX(2px);
+}
+
+.btn-place-order {
+  flex: 1;
+  padding: 16px 28px;
+  background: var(--beo-yellow);
+  border: none;
+  border-radius: var(--radius-xs);
+  color: #080808;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--glow-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition:
+    transform  var(--t-fast) var(--ease-bounce),
+    box-shadow var(--t-fast),
+    background var(--t-fast);
+}
+
+.btn-place-order:hover:not(:disabled) {
+  background: var(--beo-light);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 48px rgba(255, 208, 0, 0.80);
+}
+
+.btn-place-order:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn-place-order:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ─── Spinner ─────────────────────────────────────────────── */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(8, 8, 8, 0.3);
+  border-top-color: #080808;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+/* =========================================================
+   RIGHT PANEL — ORDER SUMMARY
+   ========================================================= */
+.checkout-summary {
+  position: sticky;
+  top: calc(64px + 24px);
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* Gold top accent */
+.checkout-summary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--grad-primary);
+}
+
+.summary-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+/* ─── Summary items ──────────────────────────────────────── */
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.summary-item-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.summary-item-img-wrap img {
+  width: 52px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.summary-item-qty {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background: var(--beo-yellow);
+  color: #080808;
+  border-radius: 50%;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-item-name {
+  flex: 1;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.summary-item-price {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ─── Summary rows ───────────────────────────────────────── */
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.summary-row span:last-child {
+  color: var(--text-primary);
+}
+
+.summary-row .free-shipping {
+  color: var(--beo-yellow);
+  font-weight: 800;
+}
+
+.summary-total {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.summary-total span:last-child {
+  color: var(--beo-yellow);
+  font-size: 1.25rem;
+}
+
+/* ─── Free shipping badge ────────────────────────────────── */
+.free-shipping-badge {
+  font-family: "Barlow", sans-serif;
+  font-size: 0.75rem;
+  color: var(--beo-yellow);
+  background: rgba(255, 208, 0, 0.08);
+  border: 1px solid rgba(255, 208, 0, 0.20);
+  border-radius: var(--radius-xs);
+  padding: 8px 12px;
+  line-height: 1.4;
+}
+
+/* ─── Secure badge ───────────────────────────────────────── */
+.summary-secure {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Barlow", sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  justify-content: center;
+  padding-top: 4px;
+}
+
+/* =========================================================
+   SUCCESS SCREEN
+   ========================================================= */
+.checkout-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  gap: 20px;
+  animation: fade-up var(--t-slow) var(--ease-out) both;
+}
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--beo-yellow);
+  color: #080808;
+  font-size: 2rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--glow-green);
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.checkout-success h1 {
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: 0.06em;
+}
+
+.checkout-success p {
+  max-width: 420px;
+  color: var(--text-secondary);
+  font-family: "Barlow", sans-serif;
+  font-size: 0.95rem;
+}
+
+.success-total {
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: 2rem;
+  color: var(--beo-yellow);
+  letter-spacing: 0.04em;
+  text-shadow: var(--glow-green);
+}
+
+.btn-back-home {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 36px;
+  background: var(--beo-yellow);
+  color: #080808;
+  border-radius: var(--radius-xs);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: var(--glow-green);
+  transition:
+    transform  var(--t-fast) var(--ease-bounce),
+    box-shadow var(--t-fast);
+  margin-top: 8px;
+}
+
+.btn-back-home:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 0 48px rgba(255, 208, 0, 0.80);
+  color: #080808;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    position: static;
+    order: -1; /* summary above form on mobile */
+  }
+}
+
+@media (max-width: 600px) {
+  .checkout-form-panel {
+    padding: 24px 18px;
+  }
+
+  .form-row.two-col,
+  .form-row.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .step-line {
+    width: 48px;
+  }
+
+  .checkout-nav {
+    flex-wrap: wrap;
+  }
+
+  .btn-place-order {
+    font-size: 0.82rem;
+    padding: 14px 18px;
+  }
+}

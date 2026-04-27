@@ -9,10 +9,13 @@ import {
   FiArrowRight,
 } from "react-icons/fi";
 import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const navigate=useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,7 +114,7 @@ export default function Navbar() {
             <span className="beo-search-text">Search</span>
           </button>
 
-          <button className="beo-icon-btn">
+          <button onClick={()=>navigate("/cart")}  className="beo-icon-btn">
             <FiShoppingCart />
             <span className="beo-cart-count">2</span>
           </button>

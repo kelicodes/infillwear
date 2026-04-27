@@ -3,6 +3,28 @@
    Uses global CSS variables from the design system
    ========================================================= */
 
+/* ── BOX SIZING RESET (safe global) ──────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* ── PAGE LAYOUT ──────────────────────────────────────────────────────────── */
 .product-page {
   display: grid;
@@ -11,6 +33,9 @@
   align-items: start;
   padding-block: 100px 80px;
   margin-top: 30px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* ── GALLERY COLUMN ───────────────────────────────────────────────────────── */
@@ -20,9 +45,12 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Main image */
+/* ── MAIN IMAGE ───────────────────────────────────────────────────────────── */
 .main-image {
   position: relative;
   border-radius: var(--radius-lg);
@@ -56,7 +84,20 @@
   transform: scale(1.07);
 }
 
-/* Gallery nav arrows */
+/* Image placeholder when no image URL */
+.img-placeholder {
+  width: 100%;
+  height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  font-family: Unbounded, sans-serif;
+  font-size: 4rem;
+  color: var(--text-muted);
+}
+
+/* ── GALLERY NAV ARROWS ───────────────────────────────────────────────────── */
 .gallery-nav {
   position: absolute;
   top: 50%;
@@ -111,7 +152,13 @@
   color: var(--text-secondary);
 }
 
-/* Thumbnails */
+/* ── MOBILE DOT INDICATORS ────────────────────────────────────────────────── */
+/* Hidden on desktop — only shown inside @media (max-width: 768px) */
+.mobile-dots {
+  display: none;
+}
+
+/* ── THUMBNAIL ROW ────────────────────────────────────────────────────────── */
 .thumbnail-row {
   display: flex;
   gap: 10px;
@@ -147,6 +194,12 @@
   display: block;
 }
 
+.thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-elevated);
+}
+
 .thumb-btn:hover {
   opacity: 0.85;
   transform: scale(1.05);
@@ -164,9 +217,12 @@
   flex-direction: column;
   gap: 0;
   padding-top: 8px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Breadcrumb / eyebrow */
+/* ── BREADCRUMB / EYEBROW ─────────────────────────────────────────────────── */
 .product-eyebrow {
   display: flex;
   align-items: center;
@@ -202,7 +258,7 @@
   color: var(--acid-green);
 }
 
-/* Title */
+/* ── TITLE ────────────────────────────────────────────────────────────────── */
 .product-title {
   font-family: "Unbounded", sans-serif;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
@@ -212,9 +268,11 @@
   color: var(--text-primary);
   margin-bottom: 14px;
   text-transform: uppercase;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-/* Description */
+/* ── DESCRIPTION ──────────────────────────────────────────────────────────── */
 .product-desc {
   font-family: "Syne", sans-serif;
   font-size: 0.9rem;
@@ -222,6 +280,8 @@
   color: var(--text-secondary);
   max-width: 400px;
   margin-bottom: 24px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ── PRICE ROW ────────────────────────────────────────────────────────────── */
@@ -261,7 +321,7 @@
   animation: hype-pulse 1.8s ease-in-out infinite;
 }
 
-/* ── DIVIDER GLOW ─────────────────────────────────────────────────────────── */
+/* ── DIVIDER ──────────────────────────────────────────────────────────────── */
 .product-divider {
   height: 1px;
   background: linear-gradient(
@@ -273,6 +333,53 @@
   );
   margin: 20px 0;
   opacity: 0.35;
+}
+
+/* ── STOCK INDICATOR ──────────────────────────────────────────────────────── */
+.stock-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Syne", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.stock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stock-dot.in  { background: var(--acid-green); box-shadow: var(--glow-green);  animation: glow-pulse 2s ease-in-out infinite; }
+.stock-dot.low { background: var(--volt);       box-shadow: 0 0 12px rgba(224, 255, 0, 0.5); animation: glow-pulse 1.4s ease-in-out infinite; }
+.stock-dot.out { background: var(--hot-coral);  box-shadow: var(--glow-coral); }
+
+.stock-text.in  { color: var(--acid-green); }
+.stock-text.low { color: var(--volt); }
+.stock-text.out { color: var(--hot-coral); }
+
+/* ── URGENCY BANNER ───────────────────────────────────────────────────────── */
+.urgency-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 69, 87, 0.08);
+  border: 1px solid rgba(255, 69, 87, 0.2);
+  margin-bottom: 20px;
+  font-family: "Syne", sans-serif;
+  font-size: 0.78rem;
+  color: var(--hot-coral);
+  font-weight: 600;
+}
+
+.urgency-icon {
+  font-size: 1rem;
+  animation: hype-pulse 1.8s ease-in-out infinite;
 }
 
 /* ── SIZE SELECTOR ────────────────────────────────────────────────────────── */
@@ -294,6 +401,10 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary);
+}
+
+.size-selected-indicator {
+  color: var(--acid-green);
 }
 
 .size-guide-link {
@@ -330,7 +441,6 @@
   letter-spacing: 0.04em;
   cursor: pointer;
   transition: all var(--t-fast) var(--ease-bounce);
-  position: relative;
 }
 
 .size-btn:hover {
@@ -360,58 +470,38 @@
   transform: none;
 }
 
-/* ── TRUST BADGES ─────────────────────────────────────────────────────────── */
-.trust-strip {
-  display: flex;
+/* ── PRODUCT FEATURES ─────────────────────────────────────────────────────── */
+.product-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
-  flex-wrap: wrap;
   margin-bottom: 24px;
 }
 
-.trust-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-glass);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  font-family: "Syne", sans-serif;
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.trust-item .trust-icon {
-  font-size: 1rem;
-}
-
-/* ── STOCK INDICATOR ──────────────────────────────────────────────────────── */
-.stock-indicator {
-  display: inline-flex;
+.feature-item {
+  display: flex;
   align-items: center;
   gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-glass);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   font-family: "Syne", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  margin-bottom: 24px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  transition: all var(--t-fast);
 }
 
-.stock-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.feature-item:hover {
+  background: var(--bg-glass-mid);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.feature-icon {
+  font-size: 1rem;
   flex-shrink: 0;
 }
-
-.stock-dot.in  { background: var(--acid-green); box-shadow: var(--glow-green); animation: glow-pulse 2s ease-in-out infinite; }
-.stock-dot.low { background: var(--volt);       box-shadow: 0 0 12px rgba(224,255,0,0.5); animation: glow-pulse 1.4s ease-in-out infinite; }
-.stock-dot.out { background: var(--hot-coral);  box-shadow: var(--glow-coral); }
-
-.stock-text.in  { color: var(--acid-green); }
-.stock-text.low { color: var(--volt); }
-.stock-text.out { color: var(--hot-coral); }
 
 /* ── CTA BUTTONS ──────────────────────────────────────────────────────────── */
 .product-actions {
@@ -426,7 +516,7 @@
   gap: 10px;
 }
 
-/* Add to Cart — primary */
+/* Add to Cart */
 .btn-cart {
   flex: 1;
   display: inline-flex;
@@ -449,6 +539,8 @@
     transform var(--t-fast) var(--ease-bounce),
     box-shadow var(--t-fast) var(--ease-out);
   animation: glow-pulse 2.2s ease-in-out infinite;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .btn-cart:hover {
@@ -471,7 +563,20 @@
   animation: none;
 }
 
-/* WhatsApp CTA — the conversion king */
+/* Spinning icon for loading state */
+.spin-icon {
+  display: inline-block;
+  font-size: 1rem;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Check icon for added state */
+.check-icon {
+  display: inline-block;
+  animation: check-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* WhatsApp CTA */
 .btn-whatsapp {
   width: 100%;
   display: inline-flex;
@@ -501,7 +606,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -512,13 +617,25 @@
 
 .btn-whatsapp:active { transform: scale(0.97); }
 
+.btn-whatsapp:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .whatsapp-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
 }
 
-.btn-whatsapp .wa-sub {
+.wa-text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.wa-sub {
   font-family: "Syne", sans-serif;
   font-size: 0.6rem;
   font-weight: 400;
@@ -529,17 +646,11 @@
   line-height: 1;
 }
 
-.wa-text-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-}
-
-/* Wishlist / share row */
+/* Secondary actions row */
 .secondary-actions {
   display: flex;
   gap: 8px;
+  position: relative;
 }
 
 .btn-icon-action {
@@ -558,6 +669,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all var(--t-fast) var(--ease-out);
+  position: relative;
 }
 
 .btn-icon-action:hover {
@@ -573,58 +685,52 @@
   background: rgba(255, 69, 87, 0.08);
 }
 
-/* ── PRODUCT FEATURES ─────────────────────────────────────────────────────── */
-.product-features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* Copy link toast */
+.copy-toast {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--acid-green);
+  color: #080810;
+  font-family: "Unbounded", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: fade-up 0.2s ease both;
+}
+
+/* ── TRUST STRIP ──────────────────────────────────────────────────────────── */
+.trust-strip {
+  display: flex;
   gap: 10px;
+  flex-wrap: wrap;
   margin-bottom: 24px;
 }
 
-.feature-item {
-  display: flex;
+.trust-item {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
+  gap: 7px;
+  padding: 8px 14px;
   border-radius: var(--radius-sm);
   background: var(--bg-glass);
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   font-family: "Syne", sans-serif;
   font-size: 0.74rem;
-  color: var(--text-secondary);
-  transition: all var(--t-fast);
-}
-
-.feature-item:hover {
-  background: var(--bg-glass-mid);
-  border-color: rgba(255,255,255,0.1);
-  color: var(--text-primary);
-}
-
-.feature-icon {
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-/* ── URGENCY BANNER ───────────────────────────────────────────────────────── */
-.urgency-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 69, 87, 0.08);
-  border: 1px solid rgba(255, 69, 87, 0.2);
-  margin-bottom: 20px;
-  font-family: "Syne", sans-serif;
-  font-size: 0.78rem;
-  color: var(--hot-coral);
   font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-.urgency-icon {
+.trust-item .trust-icon {
   font-size: 1rem;
-  animation: hype-pulse 1.8s ease-in-out infinite;
 }
 
 /* ── SKELETON ─────────────────────────────────────────────────────────────── */
@@ -633,6 +739,9 @@
   grid-template-columns: 1.05fr 0.95fr;
   gap: 64px;
   padding-block: 100px 80px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .skeleton-gallery {
@@ -645,7 +754,12 @@
   width: 100%;
   height: 580px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(90deg, var(--bg-elevated) 25%, rgba(255,255,255,0.05) 50%, var(--bg-elevated) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    rgba(255, 255, 255, 0.05) 50%,
+    var(--bg-elevated) 75%
+  );
   background-size: 1200px 100%;
   animation: shimmer 1.6s ease-in-out infinite;
 }
@@ -659,7 +773,12 @@
   width: 72px;
   height: 72px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(90deg, var(--bg-elevated) 25%, rgba(255,255,255,0.05) 50%, var(--bg-elevated) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    rgba(255, 255, 255, 0.05) 50%,
+    var(--bg-elevated) 75%
+  );
   background-size: 1200px 100%;
   animation: shimmer 1.6s ease-in-out infinite;
 }
@@ -673,7 +792,12 @@
 
 .skeleton-line {
   border-radius: var(--radius-pill);
-  background: linear-gradient(90deg, var(--bg-elevated) 25%, rgba(255,255,255,0.05) 50%, var(--bg-elevated) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    rgba(255, 255, 255, 0.05) 50%,
+    var(--bg-elevated) 75%
+  );
   background-size: 1200px 100%;
   animation: shimmer 1.6s ease-in-out infinite;
 }
@@ -708,10 +832,20 @@
   max-width: 300px;
 }
 
+/* ── MOBILE CTA BAR — hidden on desktop ──────────────────────────────────── */
+.mobile-cta-bar {
+  display: none;
+}
+
 /* ── KEYFRAMES ────────────────────────────────────────────────────────────── */
 @keyframes shimmer {
   from { background-position: -600px 0; }
-  to   { background-position: 600px 0; }
+  to   { background-position:  600px 0; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 @keyframes glow-pulse {
@@ -731,8 +865,8 @@
 
 @keyframes check-pop {
   0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
-  60%  { transform: scale(1.2) rotate(5deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  60%  { transform: scale(1.2) rotate(5deg);  opacity: 1; }
+  100% { transform: scale(1)   rotate(0deg);  opacity: 1; }
 }
 
 .animate-fade-up { animation: fade-up 0.52s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -742,20 +876,12 @@
 .delay-4 { animation-delay: 0.44s; }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   MOBILE — complete rethink from 900px down
-   Strategy:
-   • Full-bleed swipe gallery with dot indicators (no thumbnails)
-   • Content stacks naturally, left-aligned (easier to scan)
-   • Sticky bottom CTA bar with Add to Cart + WhatsApp side-by-side
-   • Touch-target sizes ≥ 48px everywhere
-   • Reduce visual noise — features grid hidden, trust strip scrolls horizontal
+   TABLET (≤ 900px)
    ══════════════════════════════════════════════════════════════════════════ */
-
-/* ── TABLET (≤ 900px) ─────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
- .product-page{
+  .product-page {
     margin-top: 60px;
- }
+  }
 
   .product-page,
   .product-skeleton-wrap {
@@ -764,41 +890,63 @@
     padding-block: 64px 0;
   }
 
-  .product-gallery { position: static; }
+  .product-gallery {
+    position: static;
+  }
 
   .main-image img,
-  .skeleton-main-img { height: 460px; }
+  .skeleton-main-img {
+    height: 460px;
+  }
 
-  .gallery-nav { opacity: 1; }
+  .img-placeholder {
+    height: 460px;
+  }
 
-  /* Give info column breathing room above sticky bar */
-  .product-info { padding-bottom: 120px; }
+  /* Always show arrows on touch devices */
+  .gallery-nav {
+    opacity: 1;
+  }
+
+  .product-info {
+    padding-bottom: 120px;
+  }
 }
 
-/* ── MOBILE (≤ 768px) — THE REAL WORK ────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE (≤ 768px)
+   ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
 
-  /* ── Layout ── */
   .product-page,
   .product-skeleton-wrap {
     padding-block: 56px 0;
     gap: 0;
   }
 
-  /* ── Gallery: edge-to-edge, taller, swipeable feel ── */
+  /* Full-bleed gallery */
   .product-gallery {
     gap: 0;
-    margin: 0 -5%;          /* break out of container padding */
-    width: calc(100% + 10%);
+    margin: 0;
+    width: 100%;
   }
 
   .main-image {
-    border-radius: 0;       /* full bleed on mobile */
+    border-radius: 0;
   }
 
-  .main-image img { height: 72vw; min-height: 300px; max-height: 480px; }
+  .main-image img {
+    height: 72vw;
+    min-height: 300px;
+    max-height: 480px;
+  }
 
-  /* Bigger, always-visible arrows */
+  .img-placeholder {
+    height: 72vw;
+    min-height: 300px;
+    max-height: 480px;
+  }
+
   .gallery-nav {
     opacity: 1;
     width: 48px;
@@ -809,11 +957,14 @@
   .gallery-nav.prev { left: 12px; }
   .gallery-nav.next { right: 12px; }
 
-  /* Dot indicator strip instead of thumbnails */
-  .thumbnail-row { display: none; }
+  /* Thumbnails → dots on mobile */
+  .thumbnail-row {
+    display: none;
+  }
 
+  /* Show mobile dot indicators */
   .mobile-dots {
-    display: flex !important;
+    display: flex;
     justify-content: center;
     gap: 6px;
     padding: 14px 0 0;
@@ -837,34 +988,29 @@
     border-radius: 3px;
   }
 
-  /* ── Info panel ── */
+  /* Info panel */
   .product-info {
     padding: 24px 0 0;
-    text-align: left;         /* left-align on mobile — easier to read */
-    padding-bottom: 140px;    /* space for sticky bar */
+    padding-bottom: 140px;
   }
 
-  /* Eyebrow */
   .product-eyebrow {
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 10px;
   }
 
-  /* Title */
   .product-title {
     font-size: clamp(1.65rem, 7.5vw, 2.4rem);
     margin-bottom: 10px;
   }
 
-  /* Description */
   .product-desc {
     font-size: 0.88rem;
     max-width: 100%;
     margin-bottom: 16px;
   }
 
-  /* Price row */
   .price-row {
     justify-content: flex-start;
     gap: 12px;
@@ -873,27 +1019,22 @@
 
   .price-main { font-size: 1.75rem; }
 
-  /* Divider */
   .product-divider { margin: 14px 0; }
 
-  /* Stock + urgency */
-  .stock-indicator { margin-bottom: 12px; }
+  .stock-indicator  { margin-bottom: 12px; }
 
   .urgency-bar {
     padding: 9px 14px;
     font-size: 0.74rem;
     margin-bottom: 14px;
-    border-radius: var(--radius-sm);
   }
 
-  /* ── Size selector ── */
   .size-section { margin-bottom: 20px; }
 
   .size-label-row {
-    flex-direction: row;     /* keep inline on mobile */
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 0;
     margin-bottom: 12px;
   }
 
@@ -901,11 +1042,11 @@
 
   .size-btn {
     min-width: 52px;
-    height: 52px;            /* larger touch target */
+    height: 52px;
     font-size: 0.72rem;
   }
 
-  /* ── Features: horizontal scroll on mobile ── */
+  /* Features: horizontal scroll on mobile */
   .product-features {
     display: flex;
     overflow-x: auto;
@@ -925,7 +1066,7 @@
     font-size: 0.72rem;
   }
 
-  /* ── Trust strip: horizontal scroll ── */
+  /* Trust strip: horizontal scroll */
   .trust-strip {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -943,18 +1084,20 @@
     padding: 8px 12px;
   }
 
-  /* ── Hide desktop action buttons (replaced by sticky bar) ── */
-  .product-actions { display: none; }
+  /* Hide desktop action buttons — sticky bar takes over */
+  .product-actions {
+    display: none;
+  }
 
-  /* ══════════════════════════════════════════════════
-     STICKY BOTTOM CTA BAR — the mobile conversion engine
-     ══════════════════════════════════════════════════ */
+  /* ── STICKY BOTTOM CTA BAR ── */
   .mobile-cta-bar {
-    display: flex !important;
+    display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
+    max-width: 100%;
     z-index: 500;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
     background: rgba(8, 8, 16, 0.92);
@@ -964,7 +1107,7 @@
     align-items: stretch;
   }
 
-  /* Wishlist icon pill */
+  /* Wishlist icon */
   .mobile-wish-btn {
     width: 52px;
     flex-shrink: 0;
@@ -986,7 +1129,7 @@
     background: rgba(255, 69, 87, 0.08);
   }
 
-  /* Add to cart — compact */
+  /* Add to Cart */
   .mobile-cart-btn {
     flex: 1;
     height: 52px;
@@ -1015,6 +1158,7 @@
     opacity: 0.35;
     animation: none;
     box-shadow: none;
+    cursor: not-allowed;
   }
 
   .mobile-cart-btn.added {
@@ -1022,7 +1166,7 @@
     animation: none;
   }
 
-  /* WhatsApp — dominant, full green */
+  /* WhatsApp */
   .mobile-wa-btn {
     flex: 1.2;
     height: 52px;
@@ -1050,20 +1194,29 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
     pointer-events: none;
   }
 
   .mobile-wa-btn:active { transform: scale(0.96); }
 
-  .mobile-wa-btn .wa-icon-sm {
+  .mobile-wa-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .wa-icon-sm {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
   }
 
   /* Skeleton mobile */
-  .skeleton-main-img { height: 72vw; min-height: 280px; border-radius: 0; }
+  .skeleton-main-img {
+    height: 72vw;
+    min-height: 280px;
+    border-radius: 0;
+  }
 
   .product-skeleton-wrap .skeleton-info {
     padding: 24px 0;
@@ -1074,31 +1227,37 @@
 @media (max-width: 400px) {
   .main-image img { height: 85vw; }
 
-  .mobile-cta-bar { gap: 8px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
+  .mobile-cta-bar {
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  }
 
   .mobile-cart-btn,
-  .mobile-wa-btn  { font-size: 0.65rem; height: 50px; }
+  .mobile-wa-btn {
+    font-size: 0.65rem;
+    height: 50px;
+  }
 
-  .size-btn { min-width: 48px; height: 48px; }
+  .size-btn {
+    min-width: 48px;
+    height: 48px;
+  }
 
-  .product-title { font-size: clamp(1.4rem, 8vw, 1.8rem); }
+  .product-title {
+    font-size: clamp(1.4rem, 8vw, 1.8rem);
+  }
 }
-
-/* ── Keep mobile-only elements hidden on desktop ────────────────────────────── */
-.mobile-dots   { display: none; }
-.mobile-cta-bar { display: none; }
-
-
 
 /* =========================================================
-   RELATED PRODUCTS (MODERN UX)
+   RELATED PRODUCTS
    ========================================================= */
-
 .related-section {
   margin-top: 90px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Header */
 .related-header {
   margin-bottom: 22px;
 }
@@ -1108,14 +1267,15 @@
   max-width: 500px;
 }
 
-/* Desktop Grid */
 .related-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 18px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Card wrapper (slightly smaller feel than main products) */
 .related-item .card {
   transform: scale(0.97);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -1125,14 +1285,11 @@
   transform: scale(1.02);
 }
 
-/* ─────────────────────────────────────────────
-   MOBILE: SWIPE CAROUSEL (IMPORTANT UX FIX)
-──────────────────────────────────────────── */
 @media (max-width: 768px) {
-
   .related-grid {
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
     gap: 14px;
     padding-bottom: 12px;
     scroll-snap-type: x mandatory;
@@ -1140,92 +1297,11 @@
   }
 
   .related-item {
-    flex: 0 0 70%;   /* 👈 THIS gives “1.5 products visible” feel */
+    flex: 0 0 70%;
     scroll-snap-align: start;
   }
 
-  /* optional: hide scrollbar */
   .related-grid::-webkit-scrollbar {
     display: none;
-  }
-}
-
-/* =========================================================
-   GLOBAL MOBILE OVERFLOW FIX
-   ========================================================= */
-
-/* Make width calculations safe */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-/* Prevent horizontal scrolling on page */
-html,
-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-/* Media never exceed parent */
-img,
-svg,
-video,
-canvas {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Main wrappers never exceed screen */
-.product-page,
-.product-skeleton-wrap,
-.product-gallery,
-.product-info,
-.related-section,
-.related-grid {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-/* =========================================================
-   MOBILE SPECIFIC FIXES
-   ========================================================= */
-@media (max-width: 768px) {
-
-  /* Remove breakout causing overflow */
-  .product-gallery {
-    margin: 0;
-    width: 100%;
-  }
-
-  /* Keep all buttons inside screen */
-  .mobile-cta-bar {
-    width: 100%;
-    max-width: 100%;
-    left: 0;
-    right: 0;
-  }
-
-  /* Prevent text pushing layout */
-  .product-title,
-  .product-desc,
-  .price-row,
-  .trust-item,
-  .feature-item,
-  .btn-cart,
-  .btn-whatsapp,
-  .mobile-cart-btn,
-  .mobile-wa-btn {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-
-  /* Related products scroll safely */
-  .related-grid {
-    overflow-x: auto;
-    overflow-y: hidden;
   }
 }

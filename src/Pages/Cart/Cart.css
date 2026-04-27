@@ -1,0 +1,428 @@
+/* =========================================================
+   CART PAGE — BEO Apparel & Accessories
+   Built on the BEO global design system
+   ========================================================= */
+
+/* ─── PAGE SHELL ─────────────────────────────────────────── */
+.cart-page {
+  min-height: 100vh;
+  padding-top: calc(64px + 48px); /* nav height + breathing room */
+}
+
+/* ─── CART HEADER ────────────────────────────────────────── */
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+
+.cart-header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 80px;
+  height: 2px;
+  background: var(--beo-yellow);
+  box-shadow: var(--glow-green);
+}
+
+.cart-header h1 {
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+/* ─── CLEAR BUTTON ───────────────────────────────────────── */
+.clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 102, 0, 0.35);
+  border-radius: var(--radius-xs);
+  color: var(--hot-coral);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background   var(--t-fast) var(--ease-out),
+    border-color var(--t-fast),
+    box-shadow   var(--t-fast),
+    transform    var(--t-fast) var(--ease-bounce);
+}
+
+.clear-btn:hover {
+  background: rgba(255, 102, 0, 0.10);
+  border-color: var(--hot-coral);
+  box-shadow: var(--glow-coral);
+  transform: scale(1.04);
+}
+
+.clear-btn:active {
+  transform: scale(0.97);
+}
+
+/* ─── EMPTY CART ─────────────────────────────────────────── */
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  text-align: center;
+  gap: 12px;
+}
+
+.empty-cart::before {
+  content: "BAG";
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-size: clamp(6rem, 18vw, 14rem);
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.03);
+  line-height: 1;
+  display: block;
+  margin-bottom: -20px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.empty-cart h2 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+.empty-cart p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: "Barlow", sans-serif;
+}
+
+/* ─── LAYOUT: GRID + SUMMARY SIDE-BY-SIDE ───────────────── */
+.cart-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ─── CART GRID ──────────────────────────────────────────── */
+.cart-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── CART CARD ──────────────────────────────────────────── */
+.cart-card {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  transition:
+    background    var(--t-fast) var(--ease-out),
+    border-color  var(--t-fast),
+    transform     var(--t-fast) var(--ease-bounce);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left glow accent on hover */
+.cart-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--beo-yellow);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform var(--t-mid) var(--ease-out);
+}
+
+.cart-card:hover {
+  background: var(--bg-elevated);
+  border-color: rgba(255, 208, 0, 0.15);
+}
+
+.cart-card:hover::before {
+  transform: scaleY(1);
+}
+
+/* ─── CARD: IMAGE ────────────────────────────────────────── */
+.cart-card img {
+  width: 100px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: transform var(--t-mid) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.cart-card:hover img {
+  transform: scale(1.04);
+}
+
+/* ─── CARD: INFO ─────────────────────────────────────────── */
+.cart-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-info h3 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.cart-info p {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--beo-yellow);
+  letter-spacing: 0.03em;
+}
+
+/* ─── QTY STEPPER ────────────────────────────────────────── */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.qty button {
+  width: 34px;
+  height: 34px;
+  background: var(--bg-glass-mid);
+  border: none;
+  color: var(--text-secondary);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    color      var(--t-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty button:hover {
+  background: var(--beo-yellow);
+  color: #080808;
+}
+
+.qty button:active {
+  transform: scale(0.92);
+}
+
+.qty span {
+  min-width: 38px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ─── REMOVE BUTTON ──────────────────────────────────────── */
+.remove-btn {
+  align-self: center;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xs);
+  color: var(--text-muted);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color        var(--t-fast),
+    border-color var(--t-fast),
+    background   var(--t-fast),
+    transform    var(--t-fast) var(--ease-bounce);
+  white-space: nowrap;
+}
+
+.remove-btn:hover {
+  color: var(--hot-coral);
+  border-color: rgba(255, 102, 0, 0.40);
+  background: rgba(255, 102, 0, 0.06);
+  transform: scale(1.05);
+}
+
+.remove-btn:active {
+  transform: scale(0.96);
+}
+
+/* ─── ORDER SUMMARY ──────────────────────────────────────── */
+.cart-summary {
+  position: sticky;
+  top: calc(64px + 24px);
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+}
+
+/* Gold top accent */
+.cart-summary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--grad-primary);
+}
+
+.cart-summary h2 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+/* ─── SUMMARY ROWS ───────────────────────────────────────── */
+.cart-summary .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cart-summary .row:last-of-type {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cart-summary .row span:last-child {
+  color: var(--beo-yellow);
+}
+
+/* ─── CHECKOUT BUTTON ────────────────────────────────────── */
+.checkout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px;
+  background: var(--beo-yellow);
+  border: none;
+  border-radius: var(--radius-xs);
+  color: #080808;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--glow-green);
+  transition:
+    transform    var(--t-fast) var(--ease-bounce),
+    box-shadow   var(--t-fast) var(--ease-out),
+    background   var(--t-fast);
+  margin-top: 4px;
+}
+
+.checkout-btn:hover {
+  background: var(--beo-light);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 40px rgba(255, 208, 0, 0.75);
+}
+
+.checkout-btn:active {
+  transform: scale(0.97) translateY(0);
+  box-shadow: 0 0 16px rgba(255, 208, 0, 0.45);
+}
+
+/* ─── LOADING STATE ──────────────────────────────────────── */
+.cart-page .skeleton-card {
+  height: 140px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 2px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cart-body {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .cart-card {
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .cart-card img {
+    width: 80px;
+    height: 96px;
+    grid-row: 1 / 3;
+  }
+
+  .remove-btn {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 4px;
+  }
+
+  .cart-header h1 {
+    font-size: 2rem;
+  }
+}
