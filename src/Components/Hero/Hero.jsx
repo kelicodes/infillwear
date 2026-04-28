@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Hero.css";
 
 const HeroSection = () => {
@@ -49,13 +50,13 @@ const HeroSection = () => {
           </p>
 
           <div className="neo-actions fade fade-5">
-            <a href="/shop" className="neo-btn neo-btn--main">
-              Shop Now
-            </a>
+         <Link to="/collection" className="neo-btn neo-btn--main">
+  Shop Now
+</Link>
 
-            <a href="/collection" className="neo-btn neo-btn--ghost">
-              Explore
-            </a>
+<Link to="/collection" className="neo-btn neo-btn--ghost">
+  Explore
+</Link>
           </div>
 
           <div className="neo-stats fade fade-6">

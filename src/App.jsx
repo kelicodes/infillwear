@@ -11,6 +11,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Cart from "./Pages/Cart/Cart";
 import Checkout from "./Pages/Check/Check";
 
+
 function App() {
   const location = useLocation();
 

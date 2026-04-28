@@ -10,6 +10,7 @@ import {
 } from "react-icons/fi";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -119,7 +120,7 @@ export default function Navbar() {
             <span className="beo-cart-count">2</span>
           </button>
 
-          <div className="beo-avatar">B</div>
+          <div onClick={()=>navigate("/gin")} className="beo-avatar">B</div>
 
           <button className="beo-cta-btn">Shop Now</button>
 
@@ -160,42 +161,49 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE MENU */}
-      <div className={`beo-mobile-menu ${menuOpen ? "is-open" : ""}`}>
-        <a href="/" className="beo-mobile-link" onClick={closeMenu}>
-          <span className="beo-mobile-link-left">
-            <span className="beo-mobile-icon">🏠</span>
-            Home
-          </span>
-        </a>
+     <div className={`beo-mobile-menu ${menuOpen ? "is-open" : ""}`}>
 
-        <a href="/shop" className="beo-mobile-link" onClick={closeMenu}>
-          <span className="beo-mobile-link-left">
-            <span className="beo-mobile-icon">🛍️</span>
-            Shop
-          </span>
-        </a>
+  <Link to="/" className="beo-mobile-link" onClick={closeMenu}>
+    <span className="beo-mobile-link-left">
+      <span className="beo-mobile-icon">🏠</span>
+      Home
+    </span>
+  </Link>
 
-        <a href="/about" className="beo-mobile-link" onClick={closeMenu}>
-          <span className="beo-mobile-link-left">
-            <span className="beo-mobile-icon">ℹ️</span>
-            About
-          </span>
-        </a>
+  <Link to="/collection" className="beo-mobile-link" onClick={closeMenu}>
+    <span className="beo-mobile-link-left">
+      <span className="beo-mobile-icon">🛍️</span>
+      Shop
+    </span>
+  </Link>
 
-        <a href="/contact" className="beo-mobile-link" onClick={closeMenu}>
-          <span className="beo-mobile-link-left">
-            <span className="beo-mobile-icon">✉️</span>
-            Contact
-          </span>
-        </a>
+  <Link to="/about" className="beo-mobile-link" onClick={closeMenu}>
+    <span className="beo-mobile-link-left">
+      <span className="beo-mobile-icon">ℹ️</span>
+      About
+    </span>
+  </Link>
 
-        <div className="beo-mobile-divider"></div>
+  <Link to="/contact" className="beo-mobile-link" onClick={closeMenu}>
+    <span className="beo-mobile-link-left">
+      <span className="beo-mobile-icon">✉️</span>
+      Contact
+    </span>
+  </Link>
 
-        <div className="beo-mobile-footer">
-          <button className="beo-mobile-shop-btn">Shop</button>
-          <button className="beo-mobile-logout-btn">Logout</button>
-        </div>
-      </div>
+  <div className="beo-mobile-divider"></div>
+
+  <div className="beo-mobile-footer">
+    <Link to="/shop" className="beo-mobile-shop-btn" onClick={closeMenu}>
+      Shop
+    </Link>
+
+    <button className="beo-mobile-logout-btn">
+      Logout
+    </button>
+  </div>
+
+</div>
     </>
   );
 }
