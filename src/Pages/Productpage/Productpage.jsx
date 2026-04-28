@@ -173,7 +173,7 @@ const ProductPage = () => {
     try {
       const token = localStorage.getItem("token");
       if(!token){
-        toast.alert("You have to login inorder to add items to cart")
+        toast.error("You have to login inorder to add items to cart")
         navigate("/gin")
         return 
       }

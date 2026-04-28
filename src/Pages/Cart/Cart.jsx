@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Cart.css";
+import { toast } from "react-toastify";
 
 const API = "https://inf-1-udgs.onrender.com";
 
@@ -14,8 +15,10 @@ const Cart = () => {
   const fetchCart = async () => {
     try {
       if (!token) {
+        toast.error("Please login first");
         setItems([]);
         setLoading(false);
+        navigate("/login");
         return;
       }
 
@@ -26,19 +29,18 @@ const Cart = () => {
         },
       });
 
-      // ⚠️ safe parse (prevents HTML crash)
       const text = await res.text();
       let data;
+
       try {
         data = JSON.parse(text);
       } catch {
-        console.log("Server returned non-JSON:", text);
+        console.log("Invalid JSON:", text);
         setItems([]);
         setLoading(false);
         return;
       }
 
-      // ❌ invalid token / auth error → logout user
       if (res.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
@@ -52,8 +54,8 @@ const Cart = () => {
       }
 
       setItems(data?.items || []);
-    } catch (err) {
-      console.log("Cart fetch error:", err);
+    } catch (error) {
+      console.log("Fetch cart error:", error);
       setItems([]);
     } finally {
       setLoading(false);
@@ -72,8 +74,8 @@ const Cart = () => {
       });
 
       fetchCart();
-    } catch (err) {
-      console.log("Cart update error:", err);
+    } catch (error) {
+      console.log("Update cart error:", error);
     }
   };
 
@@ -82,7 +84,7 @@ const Cart = () => {
   }, []);
 
   const total = items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.productId.price * item.quantity,
     0
   );
 
@@ -95,8 +97,8 @@ const Cart = () => {
 
           {items.length > 0 && (
             <button
-              onClick={() => updateCart("/cart/clear")}
               className="clear-btn"
+              onClick={() => updateCart("/cart/clear")}
             >
               CLEAR CART
             </button>
@@ -115,26 +117,37 @@ const Cart = () => {
             <div className="cart-grid">
 
               {items.map((item) => (
-                <div className="cart-card" key={item.productId}>
+                <div className="cart-card" key={item._id}>
 
-                  <img src={item.image} alt={item.name} />
+                  <img
+                    src={item.productId.images?.[0]}
+                    alt={item.productId.name}
+                  />
 
                   <div className="cart-info">
-                    <h3>{item.name}</h3>
-                    <p>KES {item.price}</p>
+                    <h3>{item.productId.name}</h3>
+                    <p>KES {item.productId.price}</p>
 
                     <div className="qty">
-                      <button onClick={() =>
-                        updateCart("/cart/decrease", { productId: item.productId })
-                      }>
+                      <button
+                        onClick={() =>
+                          updateCart("/cart/decrease", {
+                            productId: item.productId._id,
+                          })
+                        }
+                      >
                         -
                       </button>
 
                       <span>{item.quantity}</span>
 
-                      <button onClick={() =>
-                        updateCart("/cart/increase", { productId: item.productId })
-                      }>
+                      <button
+                        onClick={() =>
+                          updateCart("/cart/increase", {
+                            productId: item.productId._id,
+                          })
+                        }
+                      >
                         +
                       </button>
                     </div>
@@ -143,7 +156,9 @@ const Cart = () => {
                   <button
                     className="remove-btn"
                     onClick={() =>
-                      updateCart("/cart/remove", { productId: item.productId })
+                      updateCart("/cart/remove", {
+                        productId: item.productId._id,
+                      })
                     }
                   >
                     REMOVE
@@ -168,8 +183,8 @@ const Cart = () => {
               </div>
 
               <button
-                onClick={() => navigate("/check")}
                 className="checkout-btn"
+                onClick={() => navigate("/check")}
               >
                 CHECKOUT
               </button>

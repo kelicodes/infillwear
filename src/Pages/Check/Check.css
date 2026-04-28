@@ -1,12 +1,63 @@
 /* =========================================================
-   CHECKOUT PAGE — BEO Apparel & Accessories
-   Built on the BEO global design system
+   CHECK.CSS — BEO Apparel & Accessories
+   Checkout Page — Refined Dark Commerce
    ========================================================= */
 
-/* ─── PAGE SHELL ─────────────────────────────────────────── */
+/* ─── CSS VARIABLES (local overrides / extensions) ──────── */
+:root {
+  --beo-yellow: #ffd000;
+  --beo-light: #ffe855;
+  --hot-coral: #ff6600;
+  --bg-surface: #111111;
+  --bg-elevated: #1a1a1a;
+  --bg-glass: rgba(255,255,255,0.03);
+  --text-primary: #f0f0f0;
+  --text-secondary: #b8b8b8;
+  --text-muted: #666666;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-xs: 6px;
+  --t-fast: 160ms;
+  --t-mid: 260ms;
+  --t-slow: 440ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --grad-primary: linear-gradient(90deg, var(--beo-yellow), rgba(255,208,0,0.3));
+  --glow-green: 0 0 28px rgba(255, 208, 0, 0.35);
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 208, 0, 0.4); }
+  50%       { box-shadow: 0 0 48px rgba(255, 208, 0, 0.85); }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes progress-fill {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* =========================================================
+   PAGE SHELL
+   ========================================================= */
 .checkout-page {
   min-height: 100vh;
   padding-top: calc(64px + 48px);
+  background: #0d0d0d;
 }
 
 /* =========================================================
@@ -17,7 +68,7 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  margin-bottom: 52px;
+  margin-bottom: 64px;
 }
 
 .progress-step {
@@ -27,77 +78,99 @@
   position: relative;
 }
 
+/* Step connector line (rendered between step elements via adjacent sibling) */
+.progress-step + .progress-step::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+  margin: 0 6px;
+  transition: background var(--t-mid);
+}
+
+.progress-step.active + .progress-step::before,
+.progress-step.done + .progress-step::before {
+  background: linear-gradient(90deg, var(--beo-yellow), rgba(255, 208, 0, 0.18));
+}
+
+/* Step dot: class applied via `className` in JSX  */
+.progress-step > span:first-child,
 .step-dot {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.12);
-  background: var(--bg-elevated);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
+  cursor: default;
   transition:
     background    var(--t-mid) var(--ease-out),
     border-color  var(--t-mid),
     box-shadow    var(--t-mid),
-    color         var(--t-mid);
+    color         var(--t-mid),
+    transform     var(--t-fast) var(--ease-bounce);
   flex-shrink: 0;
   position: relative;
   z-index: 1;
 }
 
-.progress-step.active .step-dot {
-  background: var(--beo-yellow);
-  border-color: var(--beo-yellow);
-  color: #080808;
-  box-shadow: var(--glow-green);
-}
-
-.progress-step.done .step-dot {
-  background: rgba(255, 208, 0, 0.15);
-  border-color: var(--beo-yellow);
-  color: var(--beo-yellow);
-}
-
-.step-label {
+/* The JSX renders the label text directly as content of .progress-step */
+.progress-step {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-muted);
-  position: absolute;
-  bottom: -22px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
+  flex-direction: column;
+  gap: 10px;
   transition: color var(--t-mid);
 }
 
-.progress-step.active .step-label {
+.progress-step.active {
   color: var(--beo-yellow);
 }
 
-.progress-step.done .step-label {
-  color: var(--text-secondary);
+/* Dot styling via parent state */
+.progress-step.active {
+  /* The JSX doesn't render a nested .step-dot — the whole div IS the step */
+  background: transparent;
+  border: none;
 }
 
-.step-line {
-  width: 80px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 0 4px;
-  position: relative;
-  flex-shrink: 0;
+/* Re-style the step pill (the div itself) */
+.progress-step {
+  padding: 10px 20px;
+  border: 1.5px solid rgba(255,255,255,0.07);
+  border-radius: 40px;
+  background: #111;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition:
+    border-color var(--t-mid),
+    background   var(--t-mid),
+    color        var(--t-mid),
+    box-shadow   var(--t-mid);
 }
 
-.progress-step.done + .progress-step .step-line,
-.progress-step.done .step-line {
-  background: linear-gradient(to right, var(--beo-yellow), rgba(255, 208, 0, 0.3));
+.progress-step.active {
+  background: rgba(255, 208, 0, 0.08);
+  border-color: var(--beo-yellow);
+  color: var(--beo-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.12), var(--glow-green);
 }
 
 /* =========================================================
@@ -106,275 +179,186 @@
 .checkout-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
-  gap: 32px;
+  gap: 28px;
   align-items: start;
-  margin-top: 32px; /* room for step labels below dots */
+  margin-top: 8px;
 }
 
 /* =========================================================
    LEFT PANEL — FORM
    ========================================================= */
 .checkout-form-panel {
-  background: var(--bg-surface);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: var(--radius);
-  padding: 36px 32px;
+  padding: 40px 36px;
   position: relative;
   overflow: hidden;
+  animation: fade-up var(--t-slow) var(--ease-out) both;
 }
 
-/* Subtle corner accent */
+/* Yellow top-left accent bar */
 .checkout-form-panel::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 60px;
-  height: 2px;
+  top: 0; left: 0;
+  width: 56px; height: 2px;
   background: var(--beo-yellow);
+}
+
+/* Subtle radial glow in top-right corner */
+.checkout-form-panel::after {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(255,208,0,0.04) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 /* ─── Form section ───────────────────────────────────────── */
 .form-section {
-  margin-bottom: 32px;
+  animation: slide-in var(--t-mid) var(--ease-out) both;
 }
 
-.form-section-title {
+.form-section h2 {
   font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
-  font-size: 1.6rem;
-  letter-spacing: 0.06em;
+  font-size: 1.75rem;
+  letter-spacing: 0.07em;
   color: var(--text-primary);
-  margin-bottom: 24px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0 0 28px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
   position: relative;
 }
 
-.form-section-title::after {
+.form-section h2::after {
   content: "";
   position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 40px;
-  height: 2px;
+  bottom: -1px; left: 0;
+  width: 36px; height: 2px;
   background: var(--beo-yellow);
 }
 
-/* ─── Form rows ──────────────────────────────────────────── */
-.form-row {
-  display: grid;
-  gap: 16px;
-  margin-bottom: 16px;
+/* ─── Inputs ─────────────────────────────────────────────── */
+.form-section input,
+.form-section select {
+  width: 100%;
+  padding: 13px 16px;
+  margin-bottom: 14px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xs);
+  color: var(--text-primary);
+  font-family: "Barlow", "Barlow Condensed", sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  outline: none;
+  transition:
+    border-color var(--t-fast),
+    background   var(--t-fast),
+    box-shadow   var(--t-fast);
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.form-row.two-col   { grid-template-columns: 1fr 1fr; }
-.form-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
-
-/* ─── Field group ────────────────────────────────────────── */
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
+.form-section input::placeholder {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
 }
 
-.field-group:last-child {
-  margin-bottom: 0;
+.form-section input:focus,
+.form-section select:focus {
+  border-color: rgba(255, 208, 0, 0.5);
+  background: #1d1d1d;
+  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.09);
+}
+
+.form-section select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+
+.form-section select option {
+  background: #1a1a1a;
+  color: var(--text-primary);
 }
 
 /* ─── Error state ────────────────────────────────────────── */
 .input-error {
   border-color: var(--hot-coral) !important;
-  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12) !important;
-}
-
-.field-error {
-  font-family: "Barlow", sans-serif;
-  font-size: 0.72rem;
-  color: var(--hot-coral);
-  letter-spacing: 0.02em;
-}
-
-.field-hint {
-  font-family: "Barlow", sans-serif;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.10) !important;
 }
 
 /* =========================================================
-   PAYMENT OPTIONS
+   PAYMENT STEP
    ========================================================= */
-.payment-options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.payment-option {
-  position: relative;
-  display: block;
-  cursor: pointer;
-}
-
-.payment-option input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-}
-
-.payment-option-inner {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
-  background: var(--bg-elevated);
-  transition:
-    border-color var(--t-fast),
-    background   var(--t-fast),
-    box-shadow   var(--t-fast);
-}
-
-.payment-option-inner:hover {
-  border-color: rgba(255, 208, 0, 0.25);
-  background: rgba(255, 208, 0, 0.04);
-}
-
-.payment-option.selected .payment-option-inner {
-  border-color: var(--beo-yellow);
-  background: rgba(255, 208, 0, 0.06);
-  box-shadow: 0 0 0 1px rgba(255, 208, 0, 0.2);
-}
-
-/* Selected tick */
-.payment-option.selected .payment-option-inner::after {
-  content: "✓";
-  margin-left: auto;
-  font-size: 0.85rem;
-  color: var(--beo-yellow);
-  font-weight: 800;
-}
-
-.payment-icon {
-  font-size: 1.4rem;
-  flex-shrink: 0;
-}
-
-.payment-option-inner strong {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  display: block;
-}
-
-.payment-option-inner p {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin: 0;
-  font-family: "Barlow", sans-serif;
-}
-
-/* ─── Payment extra fields ───────────────────────────────── */
-.payment-fields {
-  background: var(--bg-glass);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-  margin-top: 4px;
+/* Payment sub-fields animate in */
+.form-section input[name="mpesaNumber"],
+.form-section input[name="cardNumber"],
+.form-section input[name="cardExpiry"],
+.form-section input[name="cardCvv"] {
+  animation: slide-in var(--t-mid) var(--ease-out) both;
 }
 
 /* =========================================================
-   CONFIRM STEP
+   CONFIRM STEP — ITEMS
    ========================================================= */
-.confirm-block {
-  background: var(--bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-  margin-bottom: 16px;
-}
-
-.confirm-block-title {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-
-.confirm-value {
-  font-family: "Barlow", sans-serif;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-.confirm-value--accent {
-  color: var(--beo-yellow);
-  font-weight: 600;
-}
-
-/* ─── Confirm item list ──────────────────────────────────── */
-.confirm-items {
-  background: var(--bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .confirm-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.055);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+
+.confirm-item:hover {
+  border-color: rgba(255, 208, 0, 0.15);
+  background: #1c1c1c;
 }
 
 .confirm-item img {
-  width: 44px;
-  height: 52px;
+  width: 46px;
+  height: 56px;
   object-fit: cover;
-  border-radius: var(--radius-xs);
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.confirm-item-info {
+.confirm-item div {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
 
-.confirm-item-info span:first-child {
+.confirm-item h4 {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-primary);
+  margin: 0 0 3px 0;
 }
 
-.confirm-item-info span:last-child {
+.confirm-item p {
   font-family: "Barlow", sans-serif;
   font-size: 0.75rem;
   color: var(--text-muted);
+  margin: 0;
 }
 
-.confirm-item-price {
+.confirm-item span {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--beo-yellow);
   white-space: nowrap;
@@ -388,19 +372,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-top: 8px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.055);
+  margin-top: 12px;
 }
 
-.btn-back {
-  padding: 13px 24px;
+/* Back button */
+.checkout-nav button:not(:last-child) {
+  padding: 12px 22px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: var(--radius-xs);
   color: var(--text-secondary);
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -411,17 +396,18 @@
     transform    var(--t-fast) var(--ease-bounce);
 }
 
-.btn-back:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+.checkout-nav button:not(:last-child):hover {
+  border-color: rgba(255,255,255,0.28);
   color: var(--text-primary);
   transform: translateX(-2px);
 }
 
-.btn-next {
+/* Next / Place Order button */
+.checkout-nav button:last-child {
   margin-left: auto;
   padding: 14px 32px;
   background: var(--bg-elevated);
-  border: 1px solid rgba(255, 208, 0, 0.30);
+  border: 1px solid rgba(255, 208, 0, 0.28);
   border-radius: var(--radius-xs);
   color: var(--beo-yellow);
   font-family: "Barlow Condensed", sans-serif;
@@ -434,64 +420,52 @@
     background   var(--t-fast) var(--ease-out),
     border-color var(--t-fast),
     box-shadow   var(--t-fast),
-    transform    var(--t-fast) var(--ease-bounce);
+    transform    var(--t-fast) var(--ease-bounce),
+    color        var(--t-fast);
 }
 
-.btn-next:hover {
-  background: rgba(255, 208, 0, 0.08);
+.checkout-nav button:last-child:hover:not(:disabled) {
+  background: rgba(255, 208, 0, 0.07);
   border-color: var(--beo-yellow);
   box-shadow: var(--glow-green);
   transform: translateX(2px);
 }
 
-.btn-place-order {
+/* Place order state (final step) */
+.checkout-nav button:last-child:only-child,
+.checkout-nav button:disabled {
   flex: 1;
-  padding: 16px 28px;
   background: var(--beo-yellow);
-  border: none;
-  border-radius: var(--radius-xs);
+  border-color: var(--beo-yellow);
   color: #080808;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
   box-shadow: var(--glow-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition:
-    transform  var(--t-fast) var(--ease-bounce),
-    box-shadow var(--t-fast),
-    background var(--t-fast);
+  padding: 16px 28px;
+  font-size: 0.95rem;
 }
 
-.btn-place-order:hover:not(:disabled) {
+.checkout-nav button:last-child:only-child:hover:not(:disabled) {
   background: var(--beo-light);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 48px rgba(255, 208, 0, 0.80);
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 0 52px rgba(255, 208, 0, 0.75);
 }
 
-.btn-place-order:active:not(:disabled) {
-  transform: scale(0.97);
-}
-
-.btn-place-order:disabled {
-  opacity: 0.7;
+.checkout-nav button:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
 }
 
 /* ─── Spinner ─────────────────────────────────────────────── */
 .spinner {
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid rgba(8, 8, 8, 0.3);
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(8,8,8,0.25);
   border-top-color: #080808;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.75s linear infinite;
   display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 /* =========================================================
@@ -500,150 +474,126 @@
 .checkout-summary {
   position: sticky;
   top: calc(64px + 24px);
-  background: var(--bg-surface);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.055);
   border-radius: var(--radius);
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   overflow: hidden;
+  animation: fade-up var(--t-slow) 60ms var(--ease-out) both;
 }
 
-/* Gold top accent */
+/* Full-width gold accent line at top */
 .checkout-summary::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 2px;
   background: var(--grad-primary);
 }
 
-.summary-title {
+/* Glow wash */
+.checkout-summary::after {
+  content: "";
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,208,0,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.checkout-summary h2 {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   color: var(--text-muted);
+  margin: 0;
 }
 
 /* ─── Summary items ──────────────────────────────────────── */
-.summary-items {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .summary-item {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.summary-item-img-wrap {
-  position: relative;
+.summary-item img {
+  width: 50px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
   flex-shrink: 0;
 }
 
-.summary-item-img-wrap img {
-  width: 52px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: var(--radius-xs);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.summary-item-qty {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 18px;
-  height: 18px;
-  background: var(--beo-yellow);
-  color: #080808;
-  border-radius: 50%;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.65rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.summary-item-name {
+.summary-item div {
   flex: 1;
+}
+
+.summary-item div p {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-secondary);
+  margin: 0 0 2px 0;
   line-height: 1.3;
 }
 
-.summary-item-price {
+.summary-item div small {
+  font-family: "Barlow", sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.summary-item > span {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 800;
   color: var(--text-primary);
   white-space: nowrap;
 }
 
-/* ─── Summary rows ───────────────────────────────────────── */
-.summary-row {
+/* ─── Divider ────────────────────────────────────────────── */
+.checkout-summary hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin: 2px 0;
+}
+
+/* ─── Totals ─────────────────────────────────────────────── */
+.checkout-summary > p {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--text-secondary);
+  margin: 0;
 }
 
-.summary-row span:last-child {
-  color: var(--text-primary);
-}
-
-.summary-row .free-shipping {
-  color: var(--beo-yellow);
-  font-weight: 800;
-}
-
-.summary-total {
-  font-size: 1.15rem;
-  font-weight: 900;
-}
-
-.summary-total span:last-child {
-  color: var(--beo-yellow);
-  font-size: 1.25rem;
-}
-
-/* ─── Free shipping badge ────────────────────────────────── */
-.free-shipping-badge {
-  font-family: "Barlow", sans-serif;
-  font-size: 0.75rem;
-  color: var(--beo-yellow);
-  background: rgba(255, 208, 0, 0.08);
-  border: 1px solid rgba(255, 208, 0, 0.20);
-  border-radius: var(--radius-xs);
-  padding: 8px 12px;
-  line-height: 1.4;
-}
-
-/* ─── Secure badge ───────────────────────────────────────── */
-.summary-secure {
+.checkout-summary > h3 {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Barlow", sans-serif;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  justify-content: center;
-  padding-top: 4px;
+  justify-content: space-between;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  margin: 0;
+  padding-top: 2px;
+}
+
+.checkout-summary > h3::after {
+  content: attr(data-total);
+  color: var(--beo-yellow);
+  font-size: 1.2rem;
 }
 
 /* =========================================================
@@ -655,50 +605,40 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 20px;
+  padding: 100px 20px;
   gap: 20px;
   animation: fade-up var(--t-slow) var(--ease-out) both;
 }
 
-.success-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: var(--beo-yellow);
-  color: #080808;
-  font-size: 2rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--glow-green);
-  animation: glow-pulse 2s ease-in-out infinite;
-}
-
 .checkout-success h1 {
   font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
   letter-spacing: 0.06em;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-.checkout-success p {
-  max-width: 420px;
-  color: var(--text-secondary);
+.checkout-success > p {
   font-family: "Barlow", sans-serif;
   font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
 }
 
-.success-total {
+/* Total value line in success */
+.checkout-success > p:last-of-type {
   font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
   color: var(--beo-yellow);
-  letter-spacing: 0.04em;
   text-shadow: var(--glow-green);
 }
 
-.btn-back-home {
+.checkout-success a {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   padding: 14px 36px;
   background: var(--beo-yellow);
   color: #080808;
@@ -712,13 +652,15 @@
   box-shadow: var(--glow-green);
   transition:
     transform  var(--t-fast) var(--ease-bounce),
-    box-shadow var(--t-fast);
-  margin-top: 8px;
+    box-shadow var(--t-fast),
+    background var(--t-fast);
+  margin-top: 12px;
 }
 
-.btn-back-home:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 0 48px rgba(255, 208, 0, 0.80);
+.checkout-success a:hover {
+  background: var(--beo-light);
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 0 52px rgba(255, 208, 0, 0.80);
   color: #080808;
 }
 
@@ -732,29 +674,41 @@
 
   .checkout-summary {
     position: static;
-    order: -1; /* summary above form on mobile */
+    order: -1;
+  }
+
+  .checkout-progress {
+    gap: 6px;
   }
 }
 
 @media (max-width: 600px) {
+  .checkout-page {
+    padding-top: calc(64px + 24px);
+  }
+
   .checkout-form-panel {
     padding: 24px 18px;
   }
 
-  .form-row.two-col,
-  .form-row.three-col {
-    grid-template-columns: 1fr;
+  .checkout-progress {
+    margin-bottom: 40px;
   }
 
-  .step-line {
-    width: 48px;
+  .progress-step + .progress-step::before {
+    width: 32px;
+  }
+
+  .progress-step {
+    padding: 8px 14px;
+    font-size: 0.62rem;
   }
 
   .checkout-nav {
     flex-wrap: wrap;
   }
 
-  .btn-place-order {
+  .checkout-nav button:last-child {
     font-size: 0.82rem;
     padding: 14px 18px;
   }
