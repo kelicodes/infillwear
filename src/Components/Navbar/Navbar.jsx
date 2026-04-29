@@ -53,6 +53,9 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
     useEffect(() => {
   const loadCartCount = async () => {
@@ -63,9 +66,6 @@ export default function Navbar() {
   loadCartCount();
 }, []);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const closeMenu = () => setMenuOpen(false);
 
