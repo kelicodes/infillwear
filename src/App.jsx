@@ -10,6 +10,7 @@ import Login from "./Pages/Login/Login";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Cart from "./Pages/Cart/Cart";
 import Checkout from "./Pages/Check/Check";
+import Orders from "./Pages/Orders/Orders";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/gin" element={<Login />} />
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/check" element={<Checkout/>}/>
+        <Route path="/rders" element={<Orders/>}/>
       </Routes>
 
       {!hideLayout && <Footer />}

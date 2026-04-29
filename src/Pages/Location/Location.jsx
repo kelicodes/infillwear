@@ -3,7 +3,7 @@ import { MapPin, Navigation, Phone, Globe } from "lucide-react";
 
 const Location = () => {
   return (
-    <section className="location-page section">
+    <section id="location" className="location-page section">
 
       <div className="container">
 

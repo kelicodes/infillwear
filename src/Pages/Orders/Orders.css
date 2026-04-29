@@ -1,0 +1,212 @@
+/* Orders.css */
+
+.myorders-page {
+  min-height: 100vh;
+  background: #0b0b0b;
+  color: white;
+  padding: 130px 20px 40px;
+}
+
+.myorders-head {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.myorders-head h1 {
+  font-size: 40px;
+  color: #ffd000;
+}
+
+.myorders-head p {
+  color: #999;
+  margin-top: 8px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+.empty-orders {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.empty-orders h2 {
+  margin-bottom: 15px;
+}
+
+.empty-orders button {
+  background: #ffd000;
+  border: none;
+  padding: 12px 22px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.order-card {
+  max-width: 950px;
+  margin: auto;
+  margin-bottom: 22px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.order-top {
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #222;
+}
+
+.order-id {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.order-date {
+  font-size: 13px;
+  color: #666;
+}
+
+.price {
+  display: block;
+  font-size: 22px;
+  color: #ffd000;
+  font-weight: bold;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+.Pending {
+  background: #4d4300;
+  color: #ffd000;
+}
+
+.Paid {
+  background: #003f1d;
+  color: #00ff88;
+}
+
+.Packaged {
+  background: #002d5f;
+  color: #5eb4ff;
+}
+
+.Out-for-Delivery {
+  background: #2d005f;
+  color: #c084fc;
+}
+
+.Delivered {
+  background: #00382d;
+  color: #34d399;
+}
+
+.Cancelled {
+  background: #4d0000;
+  color: #ff6b6b;
+}
+
+.progress-wrap {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px;
+  gap: 10px;
+}
+
+.progress-item {
+  flex: 1;
+  text-align: center;
+}
+
+.dot {
+  width: 13px;
+  height: 13px;
+  margin: auto;
+  border-radius: 50%;
+  background: #333;
+  margin-bottom: 8px;
+}
+
+.dot.done {
+  background: #ffd000;
+}
+
+.dot.active {
+  background: #fff;
+  box-shadow: 0 0 10px #ffd000;
+}
+
+.progress-item small {
+  font-size: 11px;
+  color: #888;
+}
+
+.cancelled-box {
+  padding: 18px;
+  color: #ff6666;
+  text-align: center;
+}
+
+.items-box {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.item-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #181818;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.item-row img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-info h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.item-info p {
+  color: #999;
+  font-size: 13px;
+}
+
+.item-info span {
+  color: #ffd000;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .order-top {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .progress-wrap {
+    overflow-x: auto;
+  }
+
+  .myorders-head h1 {
+    font-size: 32px;
+  }
+}

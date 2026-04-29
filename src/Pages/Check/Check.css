@@ -3,52 +3,47 @@
    Checkout Page — Refined Dark Commerce
    ========================================================= */
 
-/* ─── CSS VARIABLES (local overrides / extensions) ──────── */
+/* ─── VARIABLES ──────────────────────────────────────────── */
 :root {
-  --beo-yellow: #ffd000;
-  --beo-light: #ffe855;
-  --hot-coral: #ff6600;
-  --bg-surface: #111111;
-  --bg-elevated: #1a1a1a;
-  --bg-glass: rgba(255,255,255,0.03);
-  --text-primary: #f0f0f0;
-  --text-secondary: #b8b8b8;
-  --text-muted: #666666;
-  --radius: 14px;
-  --radius-sm: 9px;
-  --radius-xs: 6px;
-  --t-fast: 160ms;
-  --t-mid: 260ms;
-  --t-slow: 440ms;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --grad-primary: linear-gradient(90deg, var(--beo-yellow), rgba(255,208,0,0.3));
-  --glow-green: 0 0 28px rgba(255, 208, 0, 0.35);
+  --beo-yellow:      #ffd000;
+  --beo-light:       #ffe855;
+  --hot-coral:       #ff5533;
+  --bg-page:         #0d0d0d;
+  --bg-panel:        #141414;
+  --bg-raised:       #1a1a1a;
+  --bg-input:        #1a1a1a;
+  --text-primary:    #f0f0f0;
+  --text-secondary:  #b0b0b0;
+  --text-muted:      #555;
+  --border-subtle:   rgba(255, 255, 255, 0.06);
+  --border-panel:    rgba(255, 255, 255, 0.055);
+  --radius:          14px;
+  --radius-sm:       9px;
+  --radius-xs:       6px;
+  --t-fast:          150ms;
+  --t-mid:           250ms;
+  --t-slow:          420ms;
+  --ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --grad-gold:       linear-gradient(90deg, var(--beo-yellow), rgba(255, 208, 0, 0.25));
+  --glow-gold:       0 0 28px rgba(255, 208, 0, 0.32);
 }
 
 /* ─── KEYFRAMES ──────────────────────────────────────────── */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 208, 0, 0.4); }
-  50%       { box-shadow: 0 0 48px rgba(255, 208, 0, 0.85); }
-}
-
 @keyframes slide-in {
-  from { opacity: 0; transform: translateX(16px); }
+  from { opacity: 0; transform: translateX(14px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-
-@keyframes progress-fill {
-  from { width: 0; }
-  to   { width: 100%; }
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 208, 0, 0.35); }
+  50%       { box-shadow: 0 0 52px rgba(255, 208, 0, 0.8); }
 }
 
 /* =========================================================
@@ -57,31 +52,108 @@
 .checkout-page {
   min-height: 100vh;
   padding-top: calc(64px + 48px);
-  background: #0d0d0d;
+  background: var(--bg-page);
 }
 
 /* =========================================================
    STEP PROGRESS INDICATOR
+   =========================================================
+   JSX renders:
+     .checkout-progress
+       .progress-step[.active][.done]
+         .step-dot          ← number or ✓
+         .step-label        ← text
+         .step-line         ← connector (except last step)
    ========================================================= */
 .checkout-progress {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 0;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 }
 
+/* Each step wrapper — row layout: dot + label stacked, line trailing */
 .progress-step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0;
+  gap: 8px;
   position: relative;
+  flex-shrink: 0;
 }
 
-/* Step connector line (rendered between step elements via adjacent sibling) */
-.progress-step + .progress-step::before {
-  content: "";
-  display: block;
+/* The connector line sits between steps as a sibling inside .progress-step,
+   so we pull it out horizontally with absolute/flex tricks */
+.progress-step {
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+}
+
+/* Re-stack dot + label vertically inside a wrapper using pseudo approach:
+   We target the dot and label directly. */
+
+/* ─── Dot ────────────────────────────────────────────────── */
+.step-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition:
+    background   var(--t-mid) var(--ease-out),
+    border-color var(--t-mid),
+    color        var(--t-mid),
+    box-shadow   var(--t-mid);
+}
+
+.progress-step.active .step-dot {
+  background: rgba(255, 208, 0, 0.1);
+  border-color: var(--beo-yellow);
+  color: var(--beo-yellow);
+  box-shadow: 0 0 0 4px rgba(255, 208, 0, 0.1);
+}
+
+.progress-step.done .step-dot {
+  background: rgba(255, 208, 0, 0.08);
+  border-color: rgba(255, 208, 0, 0.5);
+  color: var(--beo-yellow);
+}
+
+/* ─── Label (below dot) ──────────────────────────────────── */
+/* The JSX wraps dot + label + line in a row flex,
+   so we use a column sub-group via a nudge on the label */
+.step-label {
+  display: none; /* hidden on small — shown at ≥480px */
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--t-mid);
+}
+
+.progress-step.active .step-label { color: var(--beo-yellow); }
+.progress-step.done   .step-label { color: var(--text-secondary); }
+
+/* ─── Connector line ─────────────────────────────────────── */
+.step-line {
   width: 72px;
   height: 2px;
   background: rgba(255, 255, 255, 0.07);
@@ -90,87 +162,18 @@
   transition: background var(--t-mid);
 }
 
-.progress-step.active + .progress-step::before,
-.progress-step.done + .progress-step::before {
-  background: linear-gradient(90deg, var(--beo-yellow), rgba(255, 208, 0, 0.18));
+.progress-step.done .step-line {
+  background: var(--grad-gold);
 }
 
-/* Step dot: class applied via `className` in JSX  */
-.progress-step > span:first-child,
-.step-dot {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
-  background: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.7rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  cursor: default;
-  transition:
-    background    var(--t-mid) var(--ease-out),
-    border-color  var(--t-mid),
-    box-shadow    var(--t-mid),
-    color         var(--t-mid),
-    transform     var(--t-fast) var(--ease-bounce);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
+/* Give the progress bar breathing room for labels */
+.checkout-progress {
+  padding-bottom: 28px;
 }
 
-/* The JSX renders the label text directly as content of .progress-step */
-.progress-step {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  flex-direction: column;
-  gap: 10px;
-  transition: color var(--t-mid);
-}
-
-.progress-step.active {
-  color: var(--beo-yellow);
-}
-
-/* Dot styling via parent state */
-.progress-step.active {
-  /* The JSX doesn't render a nested .step-dot — the whole div IS the step */
-  background: transparent;
-  border: none;
-}
-
-/* Re-style the step pill (the div itself) */
-.progress-step {
-  padding: 10px 20px;
-  border: 1.5px solid rgba(255,255,255,0.07);
-  border-radius: 40px;
-  background: #111;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.7rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition:
-    border-color var(--t-mid),
-    background   var(--t-mid),
-    color        var(--t-mid),
-    box-shadow   var(--t-mid);
-}
-
-.progress-step.active {
-  background: rgba(255, 208, 0, 0.08);
-  border-color: var(--beo-yellow);
-  color: var(--beo-yellow);
-  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.12), var(--glow-green);
+/* Show labels on wider screens */
+@media (min-width: 480px) {
+  .step-label { display: block; }
 }
 
 /* =========================================================
@@ -178,41 +181,40 @@
    ========================================================= */
 .checkout-layout {
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 28px;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
   align-items: start;
-  margin-top: 8px;
 }
 
 /* =========================================================
    LEFT PANEL — FORM
    ========================================================= */
 .checkout-form-panel {
-  background: #141414;
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
   border-radius: var(--radius);
-  padding: 40px 36px;
+  padding: 38px 34px;
   position: relative;
   overflow: hidden;
   animation: fade-up var(--t-slow) var(--ease-out) both;
 }
 
-/* Yellow top-left accent bar */
+/* Gold top-left accent */
 .checkout-form-panel::before {
   content: "";
   position: absolute;
   top: 0; left: 0;
-  width: 56px; height: 2px;
+  width: 54px; height: 2px;
   background: var(--beo-yellow);
 }
 
-/* Subtle radial glow in top-right corner */
+/* Soft corner glow */
 .checkout-form-panel::after {
   content: "";
   position: absolute;
   top: -60px; right: -60px;
-  width: 240px; height: 240px;
-  background: radial-gradient(circle, rgba(255,208,0,0.04) 0%, transparent 70%);
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(255, 208, 0, 0.04) 0%, transparent 68%);
   pointer-events: none;
 }
 
@@ -221,32 +223,33 @@
   animation: slide-in var(--t-mid) var(--ease-out) both;
 }
 
-.form-section h2 {
+/* ─── Section title (h2 with class .form-section-title) ──── */
+.form-section-title {
   font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
-  font-size: 1.75rem;
+  font-size: 1.7rem;
   letter-spacing: 0.07em;
   color: var(--text-primary);
-  margin: 0 0 28px 0;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.055);
+  margin: 0 0 26px 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
   position: relative;
 }
 
-.form-section h2::after {
+.form-section-title::after {
   content: "";
   position: absolute;
   bottom: -1px; left: 0;
-  width: 36px; height: 2px;
+  width: 34px; height: 2px;
   background: var(--beo-yellow);
 }
 
-/* ─── Inputs ─────────────────────────────────────────────── */
+/* ─── Inputs & select ────────────────────────────────────── */
 .form-section input,
 .form-section select {
   width: 100%;
   padding: 13px 16px;
-  margin-bottom: 14px;
-  background: #1a1a1a;
+  margin-bottom: 13px;
+  background: var(--bg-input);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-xs);
   color: var(--text-primary);
@@ -254,51 +257,47 @@
   font-size: 0.88rem;
   letter-spacing: 0.02em;
   outline: none;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
   transition:
     border-color var(--t-fast),
     background   var(--t-fast),
     box-shadow   var(--t-fast);
-  box-sizing: border-box;
-  appearance: none;
-  -webkit-appearance: none;
 }
 
 .form-section input::placeholder {
   color: var(--text-muted);
   font-size: 0.82rem;
-  letter-spacing: 0.03em;
 }
 
 .form-section input:focus,
 .form-section select:focus {
   border-color: rgba(255, 208, 0, 0.5);
   background: #1d1d1d;
-  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.09);
+  box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.08);
 }
 
 .form-section select {
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 38px;
 }
 
 .form-section select option {
-  background: #1a1a1a;
+  background: var(--bg-raised);
   color: var(--text-primary);
 }
 
 /* ─── Error state ────────────────────────────────────────── */
 .input-error {
   border-color: var(--hot-coral) !important;
-  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.10) !important;
+  box-shadow: 0 0 0 3px rgba(255, 85, 51, 0.1) !important;
 }
 
-/* =========================================================
-   PAYMENT STEP
-   ========================================================= */
-/* Payment sub-fields animate in */
+/* ─── Animated payment sub-fields ───────────────────────── */
 .form-section input[name="mpesaNumber"],
 .form-section input[name="cardNumber"],
 .form-section input[name="cardExpiry"],
@@ -313,13 +312,17 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.055);
+  padding: 13px 15px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   margin-bottom: 10px;
-  transition: border-color var(--t-fast), background var(--t-fast);
+  transition:
+    border-color var(--t-fast),
+    background   var(--t-fast);
 }
+
+.confirm-item:last-child { margin-bottom: 0; }
 
 .confirm-item:hover {
   border-color: rgba(255, 208, 0, 0.15);
@@ -331,37 +334,44 @@
   height: 56px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
-.confirm-item div {
+/* The two <p> tags inside .confirm-item > div */
+.confirm-item > div {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.confirm-item h4 {
+.confirm-item > div p:first-child {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-primary);
-  margin: 0 0 3px 0;
+  margin: 0;
+  line-height: 1.2;
 }
 
-.confirm-item p {
+.confirm-item > div p:last-child {
   font-family: "Barlow", sans-serif;
   font-size: 0.75rem;
   color: var(--text-muted);
   margin: 0;
 }
 
-.confirm-item span {
+/* Price span */
+.confirm-item > span {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 0.92rem;
   font-weight: 800;
   color: var(--beo-yellow);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* =========================================================
@@ -372,21 +382,21 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,0.055);
+  padding-top: 26px;
+  border-top: 1px solid var(--border-subtle);
   margin-top: 12px;
 }
 
-/* Back button */
+/* Back button — only renders when step > 0 (not :last-child) */
 .checkout-nav button:not(:last-child) {
   padding: 12px 22px;
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-xs);
   color: var(--text-secondary);
   font-family: "Barlow Condensed", sans-serif;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
@@ -397,16 +407,16 @@
 }
 
 .checkout-nav button:not(:last-child):hover {
-  border-color: rgba(255,255,255,0.28);
+  border-color: rgba(255, 255, 255, 0.25);
   color: var(--text-primary);
   transform: translateX(-2px);
 }
 
-/* Next / Place Order button */
+/* Next / Place Order — always the last button */
 .checkout-nav button:last-child {
   margin-left: auto;
-  padding: 14px 32px;
-  background: var(--bg-elevated);
+  padding: 13px 30px;
+  background: transparent;
   border: 1px solid rgba(255, 208, 0, 0.28);
   border-radius: var(--radius-xs);
   color: var(--beo-yellow);
@@ -417,55 +427,45 @@
   text-transform: uppercase;
   cursor: pointer;
   transition:
-    background   var(--t-fast) var(--ease-out),
-    border-color var(--t-fast),
-    box-shadow   var(--t-fast),
-    transform    var(--t-fast) var(--ease-bounce),
-    color        var(--t-fast);
+    background    var(--t-fast) var(--ease-out),
+    border-color  var(--t-fast),
+    box-shadow    var(--t-fast),
+    transform     var(--t-fast) var(--ease-bounce);
 }
 
 .checkout-nav button:last-child:hover:not(:disabled) {
   background: rgba(255, 208, 0, 0.07);
   border-color: var(--beo-yellow);
-  box-shadow: var(--glow-green);
+  box-shadow: var(--glow-gold);
   transform: translateX(2px);
 }
 
-/* Place order state (final step) */
-.checkout-nav button:last-child:only-child,
-.checkout-nav button:disabled {
+/* "Place Order" — only button present on step 2 */
+.checkout-nav button:only-child {
   flex: 1;
+  margin-left: 0;
   background: var(--beo-yellow);
   border-color: var(--beo-yellow);
   color: #080808;
-  box-shadow: var(--glow-green);
-  padding: 16px 28px;
+  padding: 15px 28px;
   font-size: 0.95rem;
+  box-shadow: var(--glow-gold);
+  transition:
+    background  var(--t-fast) var(--ease-out),
+    transform   var(--t-fast) var(--ease-bounce),
+    box-shadow  var(--t-fast);
 }
 
-.checkout-nav button:last-child:only-child:hover:not(:disabled) {
+.checkout-nav button:only-child:hover:not(:disabled) {
   background: var(--beo-light);
   transform: translateY(-3px) scale(1.015);
-  box-shadow: 0 0 52px rgba(255, 208, 0, 0.75);
+  box-shadow: 0 0 52px rgba(255, 208, 0, 0.7);
 }
 
 .checkout-nav button:disabled {
-  opacity: 0.65;
+  opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
-}
-
-/* ─── Spinner ─────────────────────────────────────────────── */
-.spinner {
-  width: 17px;
-  height: 17px;
-  border: 2px solid rgba(8,8,8,0.25);
-  border-top-color: #080808;
-  border-radius: 50%;
-  animation: spin 0.75s linear infinite;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
+  transform: none !important;
 }
 
 /* =========================================================
@@ -474,41 +474,42 @@
 .checkout-summary {
   position: sticky;
   top: calc(64px + 24px);
-  background: #141414;
-  border: 1px solid rgba(255,255,255,0.055);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
   border-radius: var(--radius);
-  padding: 28px 24px;
+  padding: 26px 22px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   overflow: hidden;
-  animation: fade-up var(--t-slow) 60ms var(--ease-out) both;
+  animation: fade-up var(--t-slow) 80ms var(--ease-out) both;
 }
 
-/* Full-width gold accent line at top */
+/* Gold top accent bar */
 .checkout-summary::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-gold);
 }
 
-/* Glow wash */
+/* Soft glow wash */
 .checkout-summary::after {
   content: "";
   position: absolute;
   top: -40px; right: -40px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(255,208,0,0.05) 0%, transparent 65%);
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(255, 208, 0, 0.05) 0%, transparent 65%);
   pointer-events: none;
 }
 
+/* Summary heading — <h2>Summary</h2> */
 .checkout-summary h2 {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 900;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin: 0;
@@ -518,82 +519,85 @@
 .summary-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
 }
 
 .summary-item img {
-  width: 50px;
-  height: 62px;
+  width: 48px;
+  height: 60px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
-.summary-item div {
+.summary-item > div {
   flex: 1;
+  min-width: 0;
 }
 
-.summary-item div p {
+/* Product name */
+.summary-item > div p {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-secondary);
   margin: 0 0 2px 0;
-  line-height: 1.3;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.summary-item div small {
+/* Qty */
+.summary-item > div small {
   font-family: "Barlow", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
+/* Line price */
 .summary-item > span {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 800;
   color: var(--text-primary);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* ─── Divider ────────────────────────────────────────────── */
-.checkout-summary hr {
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.07);
-  margin: 2px 0;
+/* ─── Total block — .summary-total > p ──────────────────── */
+.summary-total {
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  margin-top: 2px;
 }
 
-/* ─── Totals ─────────────────────────────────────────────── */
-.checkout-summary > p {
+.summary-total p {
   display: flex;
   justify-content: space-between;
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-.checkout-summary > h3 {
-  display: flex;
-  justify-content: space-between;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 900;
   letter-spacing: 0.06em;
   color: var(--text-primary);
   margin: 0;
-  padding-top: 2px;
 }
 
-.checkout-summary > h3::after {
-  content: attr(data-total);
+/* The KES value portion glows gold */
+.summary-total p::after {
+  content: "";  /* value is inline text — we color the whole <p> via span trick below */
+}
+
+/* Style the entire total line gold */
+.summary-total {
   color: var(--beo-yellow);
-  font-size: 1.2rem;
+}
+
+.summary-total p {
+  color: var(--beo-yellow);
 }
 
 /* =========================================================
@@ -618,21 +622,12 @@
   margin: 0;
 }
 
-.checkout-success > p {
+.checkout-success p {
   font-family: "Barlow", sans-serif;
   font-size: 0.95rem;
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.6;
-}
-
-/* Total value line in success */
-.checkout-success > p:last-of-type {
-  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
-  font-size: 1.8rem;
-  letter-spacing: 0.05em;
-  color: var(--beo-yellow);
-  text-shadow: var(--glow-green);
 }
 
 .checkout-success a {
@@ -649,18 +644,18 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  box-shadow: var(--glow-green);
-  transition:
-    transform  var(--t-fast) var(--ease-bounce),
-    box-shadow var(--t-fast),
-    background var(--t-fast);
+  box-shadow: var(--glow-gold);
   margin-top: 12px;
+  transition:
+    transform   var(--t-fast) var(--ease-bounce),
+    box-shadow  var(--t-fast),
+    background  var(--t-fast);
 }
 
 .checkout-success a:hover {
   background: var(--beo-light);
   transform: scale(1.05) translateY(-3px);
-  box-shadow: 0 0 52px rgba(255, 208, 0, 0.80);
+  box-shadow: 0 0 52px rgba(255, 208, 0, 0.8);
   color: #080808;
 }
 
@@ -676,13 +671,9 @@
     position: static;
     order: -1;
   }
-
-  .checkout-progress {
-    gap: 6px;
-  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .checkout-page {
     padding-top: calc(64px + 24px);
   }
@@ -692,24 +683,21 @@
   }
 
   .checkout-progress {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
+    padding-bottom: 0;
   }
 
-  .progress-step + .progress-step::before {
-    width: 32px;
-  }
-
-  .progress-step {
-    padding: 8px 14px;
-    font-size: 0.62rem;
+  .step-line {
+    width: 36px;
   }
 
   .checkout-nav {
     flex-wrap: wrap;
   }
 
-  .checkout-nav button:last-child {
+  .checkout-nav button:last-child,
+  .checkout-nav button:only-child {
     font-size: 0.82rem;
-    padding: 14px 18px;
+    padding: 13px 16px;
   }
 }

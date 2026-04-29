@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Check.css";
+import { useNavigate } from "react-router-dom";
 
 const API = "https://inf-1-udgs.onrender.com";
 const STEPS = ["DELIVERY", "PAYMENT", "CONFIRM"];
@@ -10,6 +11,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(true);
   const [placing, setPlacing] = useState(false);
   const [success, setSuccess] = useState(false);
+  const navigate=useNavigate()
 
   const token = localStorage.getItem("token");
 
@@ -150,6 +152,8 @@ const Checkout = () => {
 
     setItems([]);
     setSuccess(true);
+
+    navigate("/rders")
 
   } catch (error) {
     console.log(error);

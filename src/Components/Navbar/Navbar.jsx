@@ -130,7 +130,7 @@ export default function Navbar() {
           </li>
 
           <li>
-            <a href="/about">About</a>
+            <a onClick={()=>navigate("/rders")}>orders</a>
           </li>
 
           <li>
@@ -160,7 +160,7 @@ export default function Navbar() {
             <span className="beo-cart-count">{totalCount}</span>
           </button>
 
-          <div onClick={()=>navigate("/gin")} className="beo-avatar">B</div>
+          <div onClick={()=>navigate("/rders")} className="beo-avatar">B</div>
 
           <button className="beo-cta-btn">Shop Now</button>
 
@@ -179,23 +179,25 @@ export default function Navbar() {
       <div className="beo-ticker">
         <div className="beo-ticker-track">
           <div className="beo-ticker-item">
-            FREE SHIPPING OVER $50
+          BEO EXCLUSIVE
             <span className="beo-ticker-sep"></span>
             NEW DROP LIVE NOW
             <span className="beo-ticker-sep"></span>
             PREMIUM STREETWEAR
             <span className="beo-ticker-sep"></span>
-            BEO EXCLUSIVE
+            
+             FREE SHIPPING AROUND KOMAROCK
           </div>
 
           <div className="beo-ticker-item">
-            FREE SHIPPING OVER $50
+            FREE SHIPPING OVER ksh500
             <span className="beo-ticker-sep"></span>
             NEW DROP LIVE NOW
             <span className="beo-ticker-sep"></span>
             PREMIUM STREETWEAR
             <span className="beo-ticker-sep"></span>
-            BEO EXCLUSIVE
+            
+             FREE SHIPPING AROUND KOMAROCK
           </div>
         </div>
       </div>
@@ -205,31 +207,31 @@ export default function Navbar() {
 
   <Link to="/" className="beo-mobile-link" onClick={closeMenu}>
     <span className="beo-mobile-link-left">
-      <span className="beo-mobile-icon">🏠</span>
+      <span className="beo-mobile-icon"></span>
       Home
     </span>
   </Link>
 
   <Link to="/collection" className="beo-mobile-link" onClick={closeMenu}>
     <span className="beo-mobile-link-left">
-      <span className="beo-mobile-icon">🛍️</span>
+      <span className="beo-mobile-icon"></span>
       Shop
     </span>
   </Link>
 
   <Link to="/about" className="beo-mobile-link" onClick={closeMenu}>
     <span className="beo-mobile-link-left">
-      <span className="beo-mobile-icon">ℹ️</span>
+      <span className="beo-mobile-icon"></span>
       About
     </span>
   </Link>
 
-  <Link to="/contact" className="beo-mobile-link" onClick={closeMenu}>
-    <span className="beo-mobile-link-left">
-      <span className="beo-mobile-icon">✉️</span>
-      Contact
-    </span>
-  </Link>
+ <Link to="/#location" className="beo-mobile-link" onClick={closeMenu}>
+ <span className="beo-mobile-link-left">
+      <span className="beo-mobile-icon"></span>
+  Location
+  </span>
+</Link>
 
   <div className="beo-mobile-divider"></div>
 
