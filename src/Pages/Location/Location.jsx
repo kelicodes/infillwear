@@ -91,14 +91,14 @@ const Location = () => {
 
           <div className="cta-buttons">
 
-            <div
+            <a
               href="https://wa.me/254711924012"
               target="_blank"
               rel="noreferrer"
               className="btn btn-primary"
             >
               WhatsApp Us
-            </div>
+            </a>
 
             <div
               onClick={()=>navigate("/collection")}
