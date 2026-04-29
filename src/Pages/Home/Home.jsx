@@ -14,9 +14,9 @@ function Home() {
     <>
 
  <HeroSection/>
+  <NewArrivals/>
  <Categories/>
  <Collection/>
- <NewArrivals/>
  <Location/>
     </>
   )
