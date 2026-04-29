@@ -17,7 +17,7 @@ function Home() {
   <NewArrivals/>
  <Categories/>
  <Collection/>
- <Location/>
+ <Location id="location"/>
     </>
   )
 }

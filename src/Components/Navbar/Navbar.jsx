@@ -19,6 +19,27 @@ export default function Navbar() {
 
   const navigate=useNavigate()
 
+const Logout = async () => {
+  try {
+    const token = localStorage.getItem("token"); // ✅ FIX HERE
+
+    await fetch("https://inf-1-udgs.onrender.com/user/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    localStorage.removeItem("token"); // remove FIRST or AFTER request (both ok)
+
+    navigate("/gin");
+
+  } catch (error) {
+    console.error("Failed to logout:", error);
+  }
+};
+
   const getCartCount = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -219,10 +240,10 @@ export default function Navbar() {
     </span>
   </Link>
 
-  <Link to="/about" className="beo-mobile-link" onClick={closeMenu}>
+  <Link to="/rders" className="beo-mobile-link" onClick={closeMenu}>
     <span className="beo-mobile-link-left">
       <span className="beo-mobile-icon"></span>
-      About
+      orders
     </span>
   </Link>
 
@@ -236,11 +257,9 @@ export default function Navbar() {
   <div className="beo-mobile-divider"></div>
 
   <div className="beo-mobile-footer">
-    <Link to="/shop" className="beo-mobile-shop-btn" onClick={closeMenu}>
-      Shop
-    </Link>
+   
 
-    <button className="beo-mobile-logout-btn">
+    <button onClick={Logout}  className="beo-mobile-logout-btn">
       Logout
     </button>
   </div>
