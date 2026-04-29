@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "./Location.css";
 import { MapPin, Navigation, Phone, Globe } from "lucide-react";
 
 const Location = () => {
+  const navigate=useNavigate()
   return (
     <section id="location" className="location-page section">
 
@@ -89,21 +91,21 @@ const Location = () => {
 
           <div className="cta-buttons">
 
-            <a
-              href="https://wa.me/254700000000"
+            <div
+              href="https://wa.me/254711924012"
               target="_blank"
               rel="noreferrer"
               className="btn btn-primary"
             >
               WhatsApp Us
-            </a>
+            </div>
 
-            <a
-              href="/collection"
+            <div
+              onClick={()=>navigate("/collection")}
               className="btn btn-secondary"
             >
               View Products
-            </a>
+            </div>
 
           </div>
 

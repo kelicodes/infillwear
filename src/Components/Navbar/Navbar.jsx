@@ -247,12 +247,12 @@ const Logout = async () => {
     </span>
   </Link>
 
- <Link to="/#location" className="beo-mobile-link" onClick={closeMenu}>
+ {/* <Link to="/#location" className="beo-mobile-link" onClick={closeMenu}>
  <span className="beo-mobile-link-left">
       <span className="beo-mobile-icon"></span>
   Location
   </span>
-</Link>
+</Link> */}
 
   <div className="beo-mobile-divider"></div>
 
