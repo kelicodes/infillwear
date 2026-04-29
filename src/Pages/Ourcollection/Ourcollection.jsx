@@ -106,7 +106,7 @@ const Collection = () => {
       {/* FILTER TAGS */}
       <div className="collection-filters">
 
-        {["all", "trousers", "combo"].map((cat) => (
+        {[].map((cat) => (
           <span
             key={cat}
             className={`tag ${activeCat === cat ? "active" : ""}`}

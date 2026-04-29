@@ -15,13 +15,53 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
   const navigate=useNavigate()
+
+  const getCartCount = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) return 0;
+
+    const res = await fetch("https://inf-1-udgs.onrender.com/cart/getcart", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.items) return 0;
+
+    const totalCount = data.items.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+
+    return totalCount;
+  } catch (error) {
+    console.error("Failed to get cart count:", error);
+    return 0;
+  }
+};
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
+    useEffect(() => {
+  const loadCartCount = async () => {
+    const count = await getCartCount();
+    setTotalCount(count);
+  };
+
+  loadCartCount();
+}, []);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -117,7 +157,7 @@ export default function Navbar() {
 
           <button onClick={()=>navigate("/cart")}  className="beo-icon-btn">
             <FiShoppingCart />
-            <span className="beo-cart-count">2</span>
+            <span className="beo-cart-count">{totalCount}</span>
           </button>
 
           <div onClick={()=>navigate("/gin")} className="beo-avatar">B</div>
